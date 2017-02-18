@@ -1,9 +1,5 @@
 package org.usfirst.frc.team1529.robot;
 
-import java.nio.ByteBuffer;
-
-import javax.sound.sampled.Port;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -18,7 +14,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  */
 	/* Team Name: 1529 CyberCards
 	 * Year: 2017 Season
-	 * Game: First Steamworks
+	 * Game: FIRST Steamworks
 	 * What do it do(Auto)? Pass baseline, put a gear on the peg, & look for more gears
 	 * What do it do(Teleop)? Collect gears, put gears on pegs, & climb
 	 * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
@@ -34,10 +30,10 @@ public class Robot extends IterativeRobot {
 	private int   intakeMotor      = 6;
 	
 	// DIO Ports
-	private int[] leftDriveEncoderPortAB 	= {0, 1};
-	private int[] rightDriveEncoderPortAB 	= {2, 3};
-	private int[] gearArmEncoderPortAB 		= {4, 5};
-	//this is a test change
+//	private int[] leftDriveEncoderPortAB 	= {0, 1};
+//	private int[] rightDriveEncoderPortAB 	= {2, 3};
+//	private int[] gearArmEncoderPortAB 		= {4, 5};
+
 	// CAN ID
 	private int gearArmTalonCANID = 0;
 	
@@ -46,29 +42,29 @@ public class Robot extends IterativeRobot {
 	private int flap_in 	= 5;
 	
 	//I2C device addresses
-	//private int Pixy1DeviceAddress = 0x54; //Pixy R1.3A
+//	private int pixycam1_address = 0x54;
 	
 	EnhancedDriverStation station;
 	
 	TankDriveSystem tankDrive;
-	GearArm gearArm; // Gear Arm
-	UsbCamera camera; // Vision Camera setup
-	//I2C I2CPixyPort;  //Initialize I2C port
-	boolean drive_mode     = true; // If false, in climb mode
-	int auto_mode_position = 0; // details in autoInit()
-	int auto_mode_setting  = 0; // details in autoCenter()
+	GearArm gearArm; 	// Gear Arm
+	UsbCamera camera; 	// Vision Camera setup
+
+	boolean drive_mode     = true; 	// If false, in climb mode
+	int auto_mode_position = 0; 	// details in autoInit()
+	int auto_mode_setting  = 0; 	// details in autoCenter()
 	
 	// NOTE: Climber system is built into Tank Drive.
 	
 	/**
 	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * used for any initialization of code.
 	 */
 	@Override
 	public void robotInit() {
 		station = new EnhancedDriverStation(leftStickPort, rightStickPort);
 		tankDrive = new TankDriveSystem(leftDrivePorts, rightDrivePorts);
-		/** GearArm: Picks up and places gears.
+		/* GearArm: Picks up and places gears.
 		 * Inputs:
 		 * 1. talonCANID: 		0 // some setup will probablly be needed
 		 * 2. flapPCMID1: 		4 // See Pneumatic Control Module (PCM)
@@ -119,7 +115,7 @@ public class Robot extends IterativeRobot {
 		 * -Right position (1 gear on peg only)
 		 */
 		auto_mode_position = 0; // TODO implement chooser
-		auto_mode_setting = 0; // TODO implement chooser
+		auto_mode_setting = 0; 	// TODO implement chooser
 	}
 
 	/**
@@ -138,7 +134,6 @@ public class Robot extends IterativeRobot {
 			case 0: autoCenter(); break;
 			case 1: autoLeft(); break;
 			case 2: autoRight(); break;
-				
 		}
 	}
 	
@@ -214,6 +209,10 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 	}
 	
+	/**
+	 * Log something to the console.
+	 * @param msg
+	 */
 	private void log(String msg) {
 		System.out.println("-> " + msg);
 	}
