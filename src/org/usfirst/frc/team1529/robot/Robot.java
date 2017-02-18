@@ -3,7 +3,6 @@ package org.usfirst.frc.team1529.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-//import edu.wpi.first.wpilibj.I2C;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,6 +61,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		Logger.log("Initializing the robot...");
 		station = new EnhancedDriverStation(leftStickPort, rightStickPort);
 		tankDrive = new TankDriveSystem(leftDrivePorts, rightDrivePorts);
 		/* GearArm: Picks up and places gears.
@@ -87,6 +87,7 @@ public class Robot extends IterativeRobot {
 	 * @param frameRate: picture refresh rate
 	 */
 	private void setupHDCamera(int xRes, int yRes, int frameRate) {
+		Logger.log("Setting up HD Camera");
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(xRes, yRes);
 		camera.setFPS(frameRate);
@@ -175,6 +176,8 @@ public class Robot extends IterativeRobot {
 		// Can only shift to climbing mode; cannot shift back
 		// check button to see if should be in climb-mode
 		if(station.shiftToClimber()) {
+			if (drive_mode)
+				Logger.log("Shifting to Climb");
 			// TODO actually engage pneumatic.
 			drive_mode = false;
 		}
@@ -189,7 +192,7 @@ public class Robot extends IterativeRobot {
 	 * Do the things that should be done when in Teleop and in drive mode.
 	 */
 	private void teleopDrive() {
-		log("Teleop Drive");
+		Logger.log("Teleop Drive");
 		tankDrive.drive(station); // push implementation to tankDrive System
 		// TODO implement gear arm controls here.
 	}
@@ -198,7 +201,7 @@ public class Robot extends IterativeRobot {
 	 * Do the things that should be done when in Teleop and not in drive mode (aka climbing mode).
 	 */
 	private void teleopClimb() {
-		log("Teleop Climb");
+		Logger.log("Teleop Climb");
 		tankDrive.climb(station); // push implementation to tankDrive System
 	}
 
@@ -207,14 +210,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-	}
-	
-	/**
-	 * Log something to the console.
-	 * @param msg
-	 */
-	private void log(String msg) {
-		System.out.println("-> " + msg);
 	}
 }
 
