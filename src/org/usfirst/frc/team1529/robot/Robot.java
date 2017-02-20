@@ -81,8 +81,8 @@ public class Robot extends IterativeRobot {
 		 * 3. flapPCMID2: 		5 // See PCM
 		 * 4. intakeMotorPWM: 	0 // See RoboRio PWM ports
 		 */
-		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
-		setupHDCamera(1920, 1080, 10);
+//		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
+//		setupHDCamera(1920, 1080, 10);
 		
 		//PixyCam set up
 //		I2CPixyPort = new I2C(I2C.Port.kOnboard, Pixy1DeviceAddress);
