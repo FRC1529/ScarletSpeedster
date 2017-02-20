@@ -24,9 +24,16 @@ public class Robot extends IterativeRobot {
 	private int rightStickPort 	= 1;
 	
 	// PWM Ports
-	private int[] leftDrivePorts   = {0, 1, 2};
-	private int[] rightDrivePorts  = {3, 4, 5};
-	private int   intakeMotor      = 6;
+	private int YELLOW_PWM 	= 3;
+	private int ORANGE_PWM 	= 4;
+	private int RED_PWM 	= 5;
+	private int GREEN_PWM 	= 6;
+	private int PURPLE_PWM 	= 7;
+	private int GRAY_PWM 	= 8;
+	private int WHITE_PWM	= 9;
+	private int[] leftDrivePorts   = {GRAY_PWM, PURPLE_PWM, GREEN_PWM};
+	private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM};
+	private int   intakeMotor; // TODO: initialize
 	
 	// DIO Ports
 //	private int[] leftDriveEncoderPortAB 	= {0, 1};
@@ -34,11 +41,14 @@ public class Robot extends IterativeRobot {
 //	private int[] gearArmEncoderPortAB 		= {4, 5};
 
 	// CAN ID
-	private int gearArmTalonCANID = 0;
+	private int PDP_CANID			= 0;
+	private int PCM_CANID			= 1;
+	private int gearArmTalonCANID 	= 2;
 	
 	// PCM Ports
-	private int flap_out 	= 4;
-	private int flap_in 	= 5;
+	// TODO: figure this out: 0-7
+	private int flap_out 	= 100;
+	private int flap_in 	= 100;
 	
 	//I2C device addresses
 //	private int pixycam1_address = 0x54;
