@@ -26,7 +26,11 @@ public class DriveSystem {
 	 * @param victorPWMPort3: PWM for VictorSP 3
 	 */
 	public DriveSystem(boolean inverted, int victorPWMPort1, int victorPWMPort2, int victorPWMPort3) {
-		if(inverted) direction = -1.0;
+		if(inverted)
+			direction = -1.0;
+		else
+			direction = 1.0;
+
 		victor1 = new VictorSP(victorPWMPort1);
 		victor2 = new VictorSP(victorPWMPort2);
 		victor3 = new VictorSP(victorPWMPort3);

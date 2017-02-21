@@ -24,8 +24,8 @@ public class TankDriveSystem {
 	 */
 	
 	public TankDriveSystem(int[] leftPorts, int[] rightPorts) {
-		leftDrive = new DriveSystem(true, leftPorts[0], leftPorts[1], leftPorts[2]);
-		rightDrive = new DriveSystem(false, rightPorts[0], rightPorts[1], rightPorts[2]);
+		leftDrive = new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2]);
+		rightDrive = new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2]);
 	}
 	
 	/***************************
@@ -36,6 +36,8 @@ public class TankDriveSystem {
 	 * @param station
 	 */
 	public void drive(EnhancedDriverStation station) {
+		String strRightString = String.format("Right Joystick: ", station.rightStickValue());
+		if(station.rightStickValue() != 0) Logger.log(strRightString);
 		leftDrive.setSpeed(station.leftStickValue());
 		rightDrive.setSpeed(station.rightStickValue());
 	}

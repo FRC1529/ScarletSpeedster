@@ -72,8 +72,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		Logger.log("Initializing the robot...");
-		station = new EnhancedDriverStation(leftStickPort, rightStickPort);
-		tankDrive = new TankDriveSystem(leftDrivePorts, rightDrivePorts);
+		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort);
+		tankDrive 	= new TankDriveSystem(leftDrivePorts, rightDrivePorts);
 		/* GearArm: Picks up and places gears.
 		 * Inputs:
 		 * 1. talonCANID: 		0 // some setup will probablly be needed
