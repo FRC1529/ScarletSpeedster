@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1529.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class TankDriveSystem {
@@ -14,8 +15,14 @@ public class TankDriveSystem {
 	DriveSystem leftDrive, rightDrive;
 	
 	/* Pneumatic Shifter
-	 * 
+	 * 2 params: kForward port, kReverse port
+	 * 3 params: moduleID, kForward port, kReverse port
 	 */
+	DoubleSolenoid driveShifter; // module 0, kForward, kReverse; kForward should be first gear
+	DoubleSolenoid climbShifter;
+	private DoubleSolenoid.Value FORWARD 	= DoubleSolenoid.Value.kForward;
+	private DoubleSolenoid.Value REVERSE 	= DoubleSolenoid.Value.kReverse;
+	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff;
 	
 	// TODO Encoder
 	
@@ -23,9 +30,14 @@ public class TankDriveSystem {
 	 * TankDriveSystem constructor
 	 */
 	
-	public TankDriveSystem(int[] leftPorts, int[] rightPorts) {
-		leftDrive = new DriveSystem(true, leftPorts[0], leftPorts[1], leftPorts[2]);
-		rightDrive = new DriveSystem(false, rightPorts[0], rightPorts[1], rightPorts[2]);
+	public TankDriveSystem(int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
+		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2]);
+		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2]);
+		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
+		driveShifter.set(FORWARD);
+		
+		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
+		climbShifter.set(REVERSE);
 	}
 	
 	/***************************
@@ -38,6 +50,19 @@ public class TankDriveSystem {
 	public void drive(EnhancedDriverStation station) {
 		leftDrive.setSpeed(station.leftStickValue());
 		rightDrive.setSpeed(station.rightStickValue());
+		if(station.shiftUp()){
+			driveShifter.set(FORWARD);
+			Logger.log("Shifting Up");
+		}
+		
+		if(station.shiftDown()) {
+			driveShifter.set(REVERSE);
+			Logger.log("Shifting down");
+		}
+	}
+	
+	public void shiftToClimb(EnhancedDriverStation station) {
+		//TODO: shift to climb
 	}
 	
 	/**
@@ -45,12 +70,17 @@ public class TankDriveSystem {
 	 * @param station
 	 */
 	public void climb(EnhancedDriverStation station) {
-		// climbSpeed: average of the abs values of each joystick
-		double climbSpeed = (Math.abs(station.leftStickValue()) + Math.abs(station.rightStickValue()))/ 2.0;
-		
+		double speed = climbSpeed(station);
 		// Set speeds
 		// TODO make sure motors turn in correct direction.
-		leftDrive.setSpeed(climbSpeed);
-		rightDrive.setSpeed(climbSpeed);
+		Logger.log("you're trying to climb!!!!");
+		leftDrive.setSpeed(speed);
+		rightDrive.setSpeed(speed);
+	}
+	
+	private double climbSpeed(EnhancedDriverStation station) {
+		double left = Math.abs(station.leftStickValue());
+		double right = Math.abs(station.rightStickValue());
+		return (left + right) / 2.0;
 	}
 }

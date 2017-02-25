@@ -14,13 +14,17 @@ public class EnhancedDriverStation {
 	// Instance Variables
 	// DriverStation
 	DriverStation driverStation = DriverStation.getInstance();
-	
+
 	/*
 	 * Driver Controls
 	 */
 	Joystick leftStick;
 	Joystick rightStick;
 	private static double DEADBAND = .05;
+	private static double STRAIGHT_DEADBAND = 0.1;
+	
+	private static int kShiftUpButton = 7;
+	private static int kShiftDownButton = 8;
 	
 	/*
 	 * Operator Controls: 8 buttons
@@ -34,14 +38,36 @@ public class EnhancedDriverStation {
 	 * 8.
 	 */
 	
+	public boolean shiftUp() {
+		return leftStick.getRawButton(kShiftUpButton);
+	}
+	
+	public boolean shiftDown(){
+		return leftStick.getRawButton(kShiftDownButton);
+	}
+	
 	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB) {
 		leftStick = new Joystick(leftStickUSB);
 		rightStick = new Joystick(rightStickUSB);
 	}
 	
-	public double leftStickValue() { return stickValue(leftStick); }
+	private boolean isStraight() { return Math.abs(stickValue(leftStick) - stickValue(rightStick)) < STRAIGHT_DEADBAND; }
 	
-	public double rightStickValue() { return stickValue(rightStick); }
+	private double avgValue() { return (stickValue(leftStick) + stickValue(rightStick))/ 2.0; }
+	
+	public double leftStickValue() {
+		if (isStraight())
+			return avgValue();
+		else
+			return stickValue(leftStick);
+		}
+	
+	public double rightStickValue() {
+		if(isStraight())
+			return avgValue();
+		else
+			return stickValue(rightStick);
+		}
 	
 	private double stickValue(Joystick js) {
 		double value = js.getY();
