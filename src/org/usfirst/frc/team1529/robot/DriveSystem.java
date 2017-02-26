@@ -6,6 +6,7 @@
  */
 package org.usfirst.frc.team1529.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 
 /**
@@ -16,7 +17,7 @@ public class DriveSystem {
 	//Victors
 	VictorSP victor1, victor2, victor3;
 	private double direction;
-	
+	Encoder encoder;
 	/**
 	 * Sets up one side of our overall drive system.
 	 * @param inverted: sets orientation of motors
