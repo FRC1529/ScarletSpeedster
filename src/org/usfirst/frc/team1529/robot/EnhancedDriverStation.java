@@ -23,6 +23,7 @@ public class EnhancedDriverStation {
 	private static double DEADBAND = .05;
 	private static double STRAIGHT_DEADBAND = 0.1;
 	private static double DOWNSHIFT_DEADBAND = 0.25;
+	private static double UPSHIFT_DEADBAND = 0.8;
 	
 	private static int kShiftUpButton = 7;
 	private static int kShiftDownButton = 8;
@@ -43,7 +44,7 @@ public class EnhancedDriverStation {
 		return leftStick.getRawButton(kShiftUpButton);
 	}
 	
-	public boolean shiftDown(){
+	public boolean shiftDown() {
 		return leftStick.getRawButton(kShiftDownButton);
 	}
 	
@@ -87,6 +88,8 @@ public class EnhancedDriverStation {
 	public boolean shiftToClimber() { return leftStick.getRawButton(2) && leftStick.getRawButton(2); }
 	
 	public boolean isDownShiftBand() { return rightAbs() <= DOWNSHIFT_DEADBAND || leftAbs() <= DOWNSHIFT_DEADBAND; }
+	
+	public boolean isUpShiftBand() { return rightAbs() >= UPSHIFT_DEADBAND && leftAbs() >= UPSHIFT_DEADBAND; }
 	
 	public double rightAbs() { return stickAbs(rightStick); }
 	

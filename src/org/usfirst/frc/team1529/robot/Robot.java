@@ -35,13 +35,13 @@ public class Robot extends IterativeRobot {
 		
 		// DIO Ports
 		// Encoders
-		private int LEFT_A = 0;
-		private int LEFT_B = 1;
-		private int RIGHT_A = 2;
-		private int RIGHT_B = 3;
+		private int LEFT_A_DIO = 0;
+		private int LEFT_B_DIO = 1;
+		private int RIGHT_A_DIO = 2;
+		private int RIGHT_B_DIO = 3;
 
-		private int[] leftDrivePorts   = {GRAY_PWM, PURPLE_PWM, GREEN_PWM, LEFT_A, LEFT_B};
-		private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM, RIGHT_A, RIGHT_B};
+		private int[] leftDrivePorts   = {GRAY_PWM, PURPLE_PWM, GREEN_PWM, LEFT_A_DIO, LEFT_B_DIO};
+		private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM, RIGHT_A_DIO, RIGHT_B_DIO};
 
 		// CAN ID
 		private int PDP_CANID			= 0;
@@ -181,6 +181,11 @@ public class Robot extends IterativeRobot {
 		
 		private void autoRight() {
 			// TODO something when in position to right of airship;
+		}
+		
+		@Override
+		public void teleopInit() {
+			tankDrive.resetEncoders();
 		}
 
 		/**

@@ -22,18 +22,22 @@ public class TankDriveSystem {
 	private DoubleSolenoid.Value FORWARD 	= DoubleSolenoid.Value.kForward;
 	private DoubleSolenoid.Value REVERSE 	= DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff;
+	private DoubleSolenoid.Value SHIFT_UP 	= REVERSE;
+	private DoubleSolenoid.Value SHIFT_DN 	= FORWARD;
 	
 	// TODO Encoder
+	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
+	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
 	
 	/*
 	 * TankDriveSystem constructor
 	 */
 	
 	public TankDriveSystem(int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
-		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4]);
-		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4]);
+		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4], LEFT_ENCODER_REVERSE_DIRECTION);
+		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
 		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
-		driveShifter.set(FORWARD);
+		driveShifter.set(SHIFT_DN);
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
 		climbShifter.set(REVERSE);
@@ -50,6 +54,7 @@ public class TankDriveSystem {
 	public void drive(EnhancedDriverStation station) {
 		setSpeed(station);
 		checkShifters(station);
+		printEncoders();
 	}
 	
 	private void setSpeed(EnhancedDriverStation station) {
@@ -60,21 +65,39 @@ public class TankDriveSystem {
 	private void checkShifters(EnhancedDriverStation station) {
 		if(station.shiftUp()) upShift();
 		if(station.shiftDown()) downShift();
+		autoShift(station);
+	}
+	
+	private void autoShift(EnhancedDriverStation station) {
+		autoDownShift(station);
+		autoUpShift(station);
+	}
+	
+	private void autoUpShift(EnhancedDriverStation station) {
+		if(isDownShifted(driveShifter) && station.isUpShiftBand()) upShift("Auto up shift!!!!!");
+	}
+	
+	private void autoDownShift(EnhancedDriverStation station) {
 		if(isUpShifted(driveShifter) && station.isDownShiftBand()) downShift("Auto down shift!!!!!!!");
 	}
 	
-	private boolean isUpShifted(DoubleSolenoid shifter) { return shifter.get() == FORWARD; }
+	private boolean isUpShifted(DoubleSolenoid shifter) { return shifter.get() == SHIFT_UP; }
+	private boolean isDownShifted(DoubleSolenoid shifter) { return shifter.get() == SHIFT_DN; }
 	
 	private void downShift() { downShift("Down shifting..."); }
 	
 	private void downShift(String msg) {
 		Logger.log(msg);
-		driveShifter.set(REVERSE);
+		driveShifter.set(SHIFT_DN);
 	}
 	
 	private void upShift() {
-		Logger.log("Shifting Up");
-		driveShifter.set(FORWARD);
+		upShift("Shifting Up");
+	}
+	
+	private void upShift(String msg) {
+		Logger.log(msg);
+		driveShifter.set(SHIFT_UP);
 	}
 	
 	/**
@@ -102,5 +125,15 @@ public class TankDriveSystem {
 		double left = station.leftAbs();
 		double right = station.rightAbs();
 		return (left + right) / 2.0;
+	}
+	
+	public void printEncoders() {
+		Logger.log(String.format("Left Count: %d; Right Count: %d", leftDrive.encoder.get(), rightDrive.encoder.get()));
+	}
+	
+	public void resetEncoders() {
+		Logger.log("Encoders reset.");
+		leftDrive.encoder.reset();
+		rightDrive.encoder.reset();
 	}
 }
