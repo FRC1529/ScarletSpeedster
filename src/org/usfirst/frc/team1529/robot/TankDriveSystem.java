@@ -89,16 +89,15 @@ public class TankDriveSystem {
 	 */
 	public void climb(EnhancedDriverStation station) {
 		double speed = climbSpeed(station);
-		// Set speeds
-		// TODO make sure motors turn in correct direction.
+
 		Logger.log("you're trying to climb!!!!");
 		leftDrive.setSpeed(speed);
 		rightDrive.setSpeed(speed);
 	}
 	
 	private double climbSpeed(EnhancedDriverStation station) {
-		double left = Math.abs(station.leftStickValue());
-		double right = Math.abs(station.rightStickValue());
+		double left = station.leftAbs();
+		double right = station.rightAbs();
 		return (left + right) / 2.0;
 	}
 }

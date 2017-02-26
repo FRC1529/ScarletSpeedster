@@ -80,14 +80,17 @@ public class EnhancedDriverStation {
 			return 0.0;
 	}
 	
-	public boolean shiftToClimber() {
-		// Both left and right stick's button #2 must be pressed
-		return leftStick.getRawButton(2) && leftStick.getRawButton(2);
-	}
+	/**
+	 * 
+	 * @return true when the correct controls are pressed to shift to climbing
+	 */
+	public boolean shiftToClimber() { return leftStick.getRawButton(2) && leftStick.getRawButton(2); }
 	
-	public boolean isDownShiftBand() {
-		double rightAbs = Math.abs(stickValue(rightStick));
-		double leftAbs = Math.abs(stickValue(rightStick));
-		return rightAbs <= DOWNSHIFT_DEADBAND || leftAbs <= DOWNSHIFT_DEADBAND;
-	}
+	public boolean isDownShiftBand() { return rightAbs() <= DOWNSHIFT_DEADBAND || leftAbs() <= DOWNSHIFT_DEADBAND; }
+	
+	public double rightAbs() { return stickAbs(rightStick); }
+	
+	public double leftAbs() { return stickAbs(leftStick); }
+	
+	private double stickAbs(Joystick js) { return Math.abs(stickValue(js)); }
 }
