@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1529.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
 
 public class TankDriveSystem {
 	/*
