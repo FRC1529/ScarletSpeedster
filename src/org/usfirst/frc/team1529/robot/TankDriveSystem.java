@@ -30,7 +30,6 @@ public class TankDriveSystem {
 	 * TankDriveSystem constructor
 	 */
 	
-<<<<<<< HEAD
 	public TankDriveSystem(int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
 		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2]);
 		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2]);
@@ -39,11 +38,7 @@ public class TankDriveSystem {
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
 		climbShifter.set(REVERSE);
-=======
-	public TankDriveSystem(int[] leftPorts, int[] rightPorts) {
-		leftDrive = new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2]);
-		rightDrive = new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2]);
->>>>>>> origin/master
+
 	}
 	
 	/***************************
@@ -69,8 +64,13 @@ public class TankDriveSystem {
 		}
 	}
 	
+	/**
+	 * shiftToClimb: shifts the pneumatic solenoid out such that it shifts the drive motors to the climb system.
+	 * @param station
+	 */
 	public void shiftToClimb(EnhancedDriverStation station) {
-		//TODO: shift to climb
+		Logger.log("Shifted to climb!");
+		climbShifter.set(FORWARD);
 	}
 	
 	/**
