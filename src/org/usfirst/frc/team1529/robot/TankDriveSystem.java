@@ -136,4 +136,25 @@ public class TankDriveSystem {
 		leftDrive.encoder.reset();
 		rightDrive.encoder.reset();
 	}
+	
+	public void autoMoveTo(int encoder_counts) {
+		autoMoveTo(encoder_counts, encoder_counts);
+	}
+	
+	public void autoMoveTo(int leftCount, int rightCount) {
+		printEncoders();
+		encoderSetDrive(leftDrive, leftCount);
+		encoderSetDrive(rightDrive, rightCount);
+	}
+	private void encoderSetDrive(DriveSystem drive, int target) {
+		int band = 1;
+		double speed = 0.25;
+		if(drive.encoder.get() < target - band) {
+			drive.setSpeed(-speed);
+		} else if (drive.encoder.get() > target + band) {
+			drive.setSpeed(speed);
+		} else {
+			drive.setSpeed(0.0);
+		}
+	}
 }

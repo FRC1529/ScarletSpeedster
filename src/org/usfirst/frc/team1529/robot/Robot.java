@@ -133,6 +133,11 @@ public class Robot extends IterativeRobot {
 			 */
 			auto_mode_position = 0; // TODO implement chooser
 			auto_mode_setting = 0; 	// TODO implement chooser
+			
+			tankDrive.resetEncoders();
+			Logger.log("-----------------Auto Init---------------");
+			tankDrive.printEncoders();
+			Logger.log("CHECK HERE");
 		}
 
 		/**
@@ -147,11 +152,13 @@ public class Robot extends IterativeRobot {
 			 * else: do nothing
 			 */
 			
-			switch(auto_mode_position) {
-				case 0: autoCenter(); break;
-				case 1: autoLeft(); break;
-				case 2: autoRight(); break;
-			}
+//			switch(auto_mode_position) {
+//				case 0: autoCenter(); break;
+//				case 1: autoLeft(); break;
+//				case 2: autoRight(); break;
+//			}
+			Logger.log("Auto Periodic");
+			tankDrive.autoMoveTo(425);
 		}
 		
 		private void autoCenter() {
