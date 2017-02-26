@@ -6,19 +6,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * Team Name: 1529 CyberCards
+ * Year: 2017 Season
+ * Game: FIRST Steamworks
+ * What do it do(Auto)? Pass baseline, put a gear on the peg, & look for more gears
+ * What do it do(Teleop)? Collect gears, put gears on pegs, & climb
+ * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
  */
-	/* Team Name: 1529 CyberCards
-	 * Year: 2017 Season
-	 * Game: FIRST Steamworks
-	 * What do it do(Auto)? Pass baseline, put a gear on the peg, & look for more gears
-	 * What do it do(Teleop)? Collect gears, put gears on pegs, & climb
-	 * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
-	 */
 public class Robot extends IterativeRobot {
 	// USB Ports
 	private int leftStickPort 	= 0;
@@ -67,12 +61,15 @@ public class Robot extends IterativeRobot {
 	boolean drive_mode     = true; 	// If false, in climb mode
 	int auto_mode_position = 0; 	// details in autoInit()
 	int auto_mode_setting  = 0; 	// details in autoCenter()
+	int auto_step;
+	private int encoder_count_per_inch = 440 / 24;
+	private int length_of_robot_inches = 3 * 12;
+	
 	
 	// NOTE: Climber system is built into Tank Drive.
 	
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization of code.
+	 * This function is run when the robot is first started up and should be used for any initialization of code.
 	 */
 	@Override
 	public void robotInit() {
@@ -88,12 +85,10 @@ public class Robot extends IterativeRobot {
 		 */
 //			gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
 		
-		setupHDCamera(1920, 1080, 10);
+//		setupHDCamera(1920, 1080, 10);
 		
 		//PixyCam set up
-//			I2CPixyPort = new I2C(I2C.Port.kOnboard, Pixy1DeviceAddress);
-//			Pixy1ReadByteBuffer = new ByteBuffer;
-//			Pixy1ReadByteBuffer.allocate(14);
+
 	}
 	
 	/**
@@ -134,6 +129,8 @@ public class Robot extends IterativeRobot {
 		auto_mode_position = 0; // TODO implement chooser
 		auto_mode_setting = 0; 	// TODO implement chooser
 		
+		auto_step = 1;
+		
 		tankDrive.resetEncoders();
 		Logger.log("-----------------Auto Init---------------");
 		tankDrive.printEncoders();
@@ -158,7 +155,28 @@ public class Robot extends IterativeRobot {
 //				case 2: autoRight(); break;
 //			}
 		Logger.log("Auto Periodic");
-		tankDrive.autoMoveTo(425);
+		clearBaseline();
+	}
+	
+	private void clearBaseline() {
+		Logger.log("Clearing baseline");
+		
+		int inches_to_baseline_from_wall = 7 * 12 + 10; // 7 ft 9.25 inches
+		switch(auto_step) {
+		case 1: tankDrive.autoMoveTo(encoder_distance_to_location_from_wall(inches_to_baseline_from_wall)); break;
+		}
+	}
+	
+	private void firstGearOnPeg() {
+		Logger.log("Placing gear");
+		int inches_to_peg_from_wall = 9*12 + 10; // 9 ft 10 inches;
+		switch(auto_step) {
+		case 1: tankDrive.autoMoveTo(encoder_distance_to_location_from_wall(inches_to_peg_from_wall)); break;
+		}
+	}
+	
+	private int encoder_distance_to_location_from_wall(int inches) {
+		return (inches - length_of_robot_inches) * encoder_count_per_inch;
 	}
 	
 	private void autoCenter() {
@@ -167,15 +185,6 @@ public class Robot extends IterativeRobot {
 		 * 1: 2 Gear To Left
 		 * 2: 2 Gear To Right
 		 */
-		pegCenter();
-		switch(auto_mode_setting) {
-		case 1: findGear(true); break;
-		case 2: findGear(false); break;
-		}
-	}
-	
-	private void pegCenter() {
-		// TODO implement; should start in center position and place peg on center peg
 	}
 	
 	private void findGear(boolean toLeft) {

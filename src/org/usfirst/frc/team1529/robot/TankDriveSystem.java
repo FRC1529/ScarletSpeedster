@@ -28,6 +28,7 @@ public class TankDriveSystem {
 	// TODO Encoder
 	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
 	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
+	private int ENCODER_BAND = 3;
 	
 	private Robot robot;
 	
@@ -145,20 +146,47 @@ public class TankDriveSystem {
 		autoMoveTo(encoder_counts, encoder_counts);
 	}
 	
-	public void autoMoveTo(int leftCount, int rightCount) {
+	public void autoMoveTo(int leftTarget, int rightTarget) {
 		printEncoders();
-		encoderSetDrive(leftDrive, leftCount);
-		encoderSetDrive(rightDrive, rightCount);
+		encoderSetDrive(leftDrive, leftTarget);
+		encoderSetDrive(rightDrive, rightTarget);
+		if(isTargetReached(leftTarget, rightTarget)) {
+			Logger.log(String.format("Step %d was successfully achieved.", robot.auto_step));
+			robot.auto_step++;
+			leftDrive.encoder.reset();
+			rightDrive.encoder.reset();
+		}
 	}
+	
+	private double pSpeedSet(DriveSystem drive, int target) {
+		double kP = 0.15;
+		int max_encoder_distance = 50;
+		int encoder_distance = target - drive.encoder.get();
+		if(encoder_distance > max_encoder_distance) {
+			return 1.0;
+		} else if(encoder_distance < -max_encoder_distance) {
+			return -1.0;
+		} else {
+			return kP * (max_encoder_distance - encoder_distance) / max_encoder_distance;
+		}
+	}
+	
 	private void encoderSetDrive(DriveSystem drive, int target) {
-		int band = 1;
 		double speed = 0.25;
-		if(drive.encoder.get() < target - band) {
+		if(drive.encoder.get() < target - ENCODER_BAND) {
 			drive.setSpeed(-speed);
-		} else if (drive.encoder.get() > target + band) {
+		} else if (drive.encoder.get() > target + ENCODER_BAND) {
 			drive.setSpeed(speed);
 		} else {
 			drive.setSpeed(0.0);
 		}
+	}
+	
+	private boolean isTargetReached(int leftTarget, int rightTarget) {
+		return isReached(leftDrive, leftTarget) && isReached(rightDrive, rightTarget);
+	}
+	
+	private boolean isReached(DriveSystem drive, int target) {
+		return drive.encoder.get() >= (target - ENCODER_BAND) && drive.encoder.get() <= (target + ENCODER_BAND);
 	}
 }
