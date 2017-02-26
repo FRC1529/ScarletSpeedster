@@ -48,18 +48,22 @@ public class TankDriveSystem {
 	 * @param station
 	 */
 	public void drive(EnhancedDriverStation station) {
+		setSpeed(station);
+		checkShifters(station);
+	}
+	
+	private void setSpeed(EnhancedDriverStation station) {
 		leftDrive.setSpeed(station.leftStickValue());
 		rightDrive.setSpeed(station.rightStickValue());
-		checkShifters(station);
 	}
 	
 	private void checkShifters(EnhancedDriverStation station) {
 		if(station.shiftUp()) upShift();
 		if(station.shiftDown()) downShift();
-		if(isForward(driveShifter) && station.isDownShiftBand()) downShift("Auto down shift!!!!!!!");
+		if(isUpShifted(driveShifter) && station.isDownShiftBand()) downShift("Auto down shift!!!!!!!");
 	}
 	
-	private boolean isForward(DoubleSolenoid shifter) { return shifter.get() == FORWARD; }
+	private boolean isUpShifted(DoubleSolenoid shifter) { return shifter.get() == FORWARD; }
 	
 	private void downShift() { downShift("Down shifting..."); }
 	

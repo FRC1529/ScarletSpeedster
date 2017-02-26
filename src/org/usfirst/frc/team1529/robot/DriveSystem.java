@@ -15,9 +15,8 @@ import edu.wpi.first.wpilibj.VictorSP;
 public class DriveSystem {
 	//Victors
 	VictorSP victor1, victor2, victor3;
-	double direction;
+	private double direction;
 	
-	//Constructors
 	/**
 	 * Sets up one side of our overall drive system.
 	 * @param inverted: sets orientation of motors
@@ -36,8 +35,6 @@ public class DriveSystem {
 		victor3 = new VictorSP(victorPWMPort3);
 	}
 	
-	// setSpeed
-	// Sets the speeds of each victor
 	/**
 	 * Sets speed for all Victor SPs
 	 * @param speed: speed setting
