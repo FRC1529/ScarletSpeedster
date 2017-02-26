@@ -49,19 +49,29 @@ public class TankDriveSystem {
 	 * @param station
 	 */
 	public void drive(EnhancedDriverStation station) {
-		String strRightString = String.format("Right Joystick: ", station.rightStickValue());
-		if(station.rightStickValue() != 0) Logger.log(strRightString);
 		leftDrive.setSpeed(station.leftStickValue());
 		rightDrive.setSpeed(station.rightStickValue());
-		if(station.shiftUp()){
-			driveShifter.set(FORWARD);
-			Logger.log("Shifting Up");
-		}
-		
-		if(station.shiftDown()) {
-			driveShifter.set(REVERSE);
-			Logger.log("Shifting down");
-		}
+		checkShifters(station);
+	}
+	
+	private void checkShifters(EnhancedDriverStation station) {
+		if(station.shiftUp()) upShift();
+		if(station.shiftDown()) downShift();
+		if(isForward(driveShifter) && station.isDownShiftBand()) downShift("Auto down shift!!!!!!!");
+	}
+	
+	private boolean isForward(DoubleSolenoid shifter) { return shifter.get() == FORWARD; }
+	
+	private void downShift() { downShift("Down shifting..."); }
+	
+	private void downShift(String msg) {
+		Logger.log(msg);
+		driveShifter.set(REVERSE);
+	}
+	
+	private void upShift() {
+		Logger.log("Shifting Up");
+		driveShifter.set(FORWARD);
 	}
 	
 	/**

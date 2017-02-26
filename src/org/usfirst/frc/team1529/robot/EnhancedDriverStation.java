@@ -22,6 +22,7 @@ public class EnhancedDriverStation {
 	Joystick rightStick;
 	private static double DEADBAND = .05;
 	private static double STRAIGHT_DEADBAND = 0.1;
+	private static double DOWNSHIFT_DEADBAND = 0.25;
 	
 	private static int kShiftUpButton = 7;
 	private static int kShiftDownButton = 8;
@@ -82,5 +83,11 @@ public class EnhancedDriverStation {
 	public boolean shiftToClimber() {
 		// Both left and right stick's button #2 must be pressed
 		return leftStick.getRawButton(2) && leftStick.getRawButton(2);
+	}
+	
+	public boolean isDownShiftBand() {
+		double rightAbs = Math.abs(stickValue(rightStick));
+		double leftAbs = Math.abs(stickValue(rightStick));
+		return rightAbs <= DOWNSHIFT_DEADBAND || leftAbs <= DOWNSHIFT_DEADBAND;
 	}
 }
