@@ -29,11 +29,15 @@ public class TankDriveSystem {
 	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
 	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
 	
+	private Robot robot;
+	
 	/*
 	 * TankDriveSystem constructor
 	 */
 	
-	public TankDriveSystem(int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
+	public TankDriveSystem(Robot theRobot, int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
+		robot = theRobot;
+		
 		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4], LEFT_ENCODER_REVERSE_DIRECTION);
 		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
 		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
