@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
 	private int rightStickPort 	= 1;
 	
 	// PWM Ports
+<<<<<<< HEAD
 	// PWM Ports
 		private int YELLOW_PWM 	= 3;
 		private int ORANGE_PWM 	= 4;
@@ -94,6 +95,67 @@ public class Robot extends IterativeRobot {
 //			Pixy1ReadByteBuffer = new ByteBuffer;
 //			Pixy1ReadByteBuffer.allocate(14);
 		}
+=======
+	private int YELLOW_PWM 	= 3;
+	private int ORANGE_PWM 	= 4;
+	private int RED_PWM 	= 5;
+	private int GREEN_PWM 	= 6;
+	private int PURPLE_PWM 	= 7;
+	private int GRAY_PWM 	= 8;
+	private int WHITE_PWM	= 9;
+	private int[] leftDrivePorts   = {GRAY_PWM, PURPLE_PWM, GREEN_PWM};
+	private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM};
+	private int   intakeMotor; // TODO: initialize
+	
+	// DIO Ports
+//	private int[] leftDriveEncoderPortAB 	= {0, 1};
+//	private int[] rightDriveEncoderPortAB 	= {2, 3};
+//	private int[] gearArmEncoderPortAB 		= {4, 5};
+
+	// CAN ID
+	private int PDP_CANID			= 0;
+	private int PCM_CANID			= 1;
+	private int gearArmTalonCANID 	= 2;
+	
+	// PCM Ports
+	// TODO: figure this out: 0-7
+	private int flap_out 	= 100;
+	private int flap_in 	= 100;
+	
+	//I2C device addresses
+//	private int pixycam1_address = 0x54;
+	
+	EnhancedDriverStation station;
+	
+	TankDriveSystem tankDrive;
+	GearArm gearArm; 	// Gear Arm
+	UsbCamera camera; 	// Vision Camera setup
+
+	boolean drive_mode     = true; 	// If false, in climb mode
+	int auto_mode_position = 0; 	// details in autoInit()
+	int auto_mode_setting  = 0; 	// details in autoCenter()
+	
+	// NOTE: Climber system is built into Tank Drive.
+	
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization of code.
+	 */
+	@Override
+	public void robotInit() {
+		Logger.log("Initializing the robot...");
+		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort);
+		tankDrive 	= new TankDriveSystem(leftDrivePorts, rightDrivePorts);
+		/* GearArm: Picks up and places gears.
+		 * Inputs:
+		 * 1. talonCANID: 		0 // some setup will probablly be needed
+		 * 2. flapPCMID1: 		4 // See Pneumatic Control Module (PCM)
+		 * 3. flapPCMID2: 		5 // See PCM
+		 * 4. intakeMotorPWM: 	0 // See RoboRio PWM ports
+		 */
+//		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
+//		setupHDCamera(1920, 1080, 10);
+>>>>>>> origin/master
 		
 		/**
 		 * Setup for HD camera for driver and operator.

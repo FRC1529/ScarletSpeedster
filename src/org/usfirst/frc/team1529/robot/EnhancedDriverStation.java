@@ -71,11 +71,12 @@ public class EnhancedDriverStation {
 	
 	private double stickValue(Joystick js) {
 		double value = js.getY();
-		if(value > DEADBAND || value < DEADBAND) {
+		Logger.log(String.format("Stick value: %f", value));
+	
+		if(value > DEADBAND || value < DEADBAND)
 			return value;
-		} else {
+		else
 			return 0.0;
-		}
 	}
 	
 	public boolean shiftToClimber() {

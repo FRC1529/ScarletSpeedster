@@ -28,8 +28,14 @@ public class DriveSystem {
 	public DriveSystem(boolean inverted, int victorPWMPort1, int victorPWMPort2, int victorPWMPort3) {
 		if(inverted)
 			direction = -1.0;
+<<<<<<< HEAD
 		else 
 			direction = 1.0;
+=======
+		else
+			direction = 1.0;
+
+>>>>>>> origin/master
 		victor1 = new VictorSP(victorPWMPort1);
 		victor2 = new VictorSP(victorPWMPort2);
 		victor3 = new VictorSP(victorPWMPort3);
