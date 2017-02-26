@@ -34,6 +34,7 @@ public class DriveSystem {
 		victor1 = new VictorSP(victorPWMPort1);
 		victor2 = new VictorSP(victorPWMPort2);
 		victor3 = new VictorSP(victorPWMPort3);
+		encoder = new Encoder(0 , 1);
 	}
 	
 	/**
