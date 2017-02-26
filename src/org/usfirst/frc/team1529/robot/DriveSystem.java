@@ -25,7 +25,7 @@ public class DriveSystem {
 	 * @param victorPWMPort2: PWM for VictorSP 2
 	 * @param victorPWMPort3: PWM for VictorSP 3
 	 */
-	public DriveSystem(boolean inverted, int victorPWMPort1, int victorPWMPort2, int victorPWMPort3) {
+	public DriveSystem(boolean inverted, int victorPWMPort1, int victorPWMPort2, int victorPWMPort3, int channelA, int channelB) {
 		if(inverted)
 			direction = -1.0;
 		else 
@@ -34,7 +34,7 @@ public class DriveSystem {
 		victor1 = new VictorSP(victorPWMPort1);
 		victor2 = new VictorSP(victorPWMPort2);
 		victor3 = new VictorSP(victorPWMPort3);
-		encoder = new Encoder(0 , 1);
+		encoder = new Encoder(channelA , channelB);
 	}
 	
 	/**

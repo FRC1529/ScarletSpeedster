@@ -30,8 +30,8 @@ public class TankDriveSystem {
 	 */
 	
 	public TankDriveSystem(int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
-		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2]);
-		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2]);
+		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4]);
+		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4]);
 		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
 		driveShifter.set(FORWARD);
 		
