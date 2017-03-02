@@ -171,16 +171,16 @@ public class TankDriveSystem {
 		}
 	}
 	
-	private void encoderSetDrive(DriveSystem drive, int target) {
-		double speed = 0.25;
-		if(drive.encoder.get() < target - ENCODER_BAND) {
-			drive.setSpeed(-speed);
-		} else if (drive.encoder.get() > target + ENCODER_BAND) {
-			drive.setSpeed(speed);
-		} else {
-			drive.setSpeed(0.0);
-		}
-	}
+//	private void encoderSetDrive(DriveSystem drive, int target) {
+//		double speed = 0.25;
+//		if(drive.encoder.get() < target - ENCODER_BAND) {
+//			drive.setSpeed(-speed);
+//		} else if (drive.encoder.get() > target + ENCODER_BAND) {
+//			drive.setSpeed(speed);
+//		} else {
+//			drive.setSpeed(0.0);
+//		}
+//	}
 	
 	private boolean isTargetReached(int leftTarget, int rightTarget) {
 		return isReached(leftDrive, leftTarget) && isReached(rightDrive, rightTarget);
