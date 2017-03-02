@@ -148,8 +148,8 @@ public class TankDriveSystem {
 	
 	public void autoMoveTo(int leftTarget, int rightTarget) {
 		printEncoders();
-		encoderSetDrive(leftDrive, leftTarget);
-		encoderSetDrive(rightDrive, rightTarget);
+		pSpeedSet(leftDrive, leftTarget);
+		pSpeedSet(rightDrive, rightTarget);
 		if(isTargetReached(leftTarget, rightTarget)) {
 			Logger.log(String.format("Step %d was successfully achieved.", robot.auto_step));
 			robot.auto_step++;
