@@ -29,8 +29,8 @@ public class Robot extends IterativeRobot {
 	
 	// DIO Ports
 	// Encoders
-	private int LEFT_A_DIO = 0;
-	private int LEFT_B_DIO = 1;
+	private int LEFT_A_DIO 	= 0;
+	private int LEFT_B_DIO 	= 1;
 	private int RIGHT_A_DIO = 2;
 	private int RIGHT_B_DIO = 3;
 
@@ -215,13 +215,14 @@ public class Robot extends IterativeRobot {
 		if(station.shiftToClimber()) {
 			if (drive_mode)
 				Logger.log("Shifting to Climb");
-			// TODO actually engage pneumatic.
+			// TODO actually engage pneumatic to shift to climb mode.
 			drive_mode = false;
 		}
 
-		if (drive_mode)
+		if (drive_mode) {
 			teleopDrive(); // Can either do driving/setting gears
-		else
+			teleopGearArm(); // Control the gear arm and intake system
+		} else
 			teleopClimb(); // Or climb
 	}
 	
@@ -232,6 +233,11 @@ public class Robot extends IterativeRobot {
 		Logger.log("Teleop Drive");
 		tankDrive.drive(station); // push implementation to tankDrive System
 		// TODO implement gear arm controls here.
+	}
+	
+	private void teleopGearArm() {
+		Logger.log("Teleop gear arm control");
+		gearArm.control(station);
 	}
 	
 	/**

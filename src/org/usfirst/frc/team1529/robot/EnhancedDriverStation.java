@@ -96,4 +96,14 @@ public class EnhancedDriverStation {
 	public double leftAbs() { return stickAbs(leftStick); }
 	
 	private double stickAbs(Joystick js) { return Math.abs(stickValue(js)); }
+	
+	public boolean intakeStatus() {
+		//TODO: add code when buttons ready.
+		return false;
+	}
+	
+	public boolean flapStatus() {
+		//TODO: add code when buttons are ready.
+		return false;
+	}
 }

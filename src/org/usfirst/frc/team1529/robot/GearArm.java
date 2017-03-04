@@ -5,6 +5,7 @@ package org.usfirst.frc.team1529.robot;
 
 import com.ctre.CANTalon; // For pivot of arm
 import edu.wpi.first.wpilibj.DoubleSolenoid; // for basket release flap
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP; // for intake wheel
 
 /**
@@ -15,19 +16,16 @@ public class GearArm {
 	/*
 	 * Instance Variables
 	 */
-	// Main arm motion*********************************
-	/* Talon SRX to rotate arm
-	 * Input is CAN Device ID
-	 * See reference manual as needed.
-	 */
 	CANTalon pivot;
-	int position; // arm position
 
 	// Encoder to measure rotation ********************
-	// TODO add encoder
+	private int time_count;
+	private int count_to;
 	
 	// Intake System **********************************
 	DoubleSolenoid flap; // Pneumatic Flap
+	private DoubleSolenoid.Value OPEN 	= DoubleSolenoid.Value.kForward;
+	private DoubleSolenoid.Value CLOSE 	= DoubleSolenoid.Value.kReverse;
 	VictorSP intake;// Intake Motor Victor
 	boolean isIntake;
 	
@@ -43,31 +41,59 @@ public class GearArm {
 	 * @param intakeMotorPWM
 	 */
 	public GearArm(int talonCANID, int flapPCMID1, int flapPCMID2, int intakeMotorPWM) {
-		pivot = new CANTalon(talonCANID);
-		flap = new DoubleSolenoid(flapPCMID1, flapPCMID2);
-		intake = new VictorSP(intakeMotorPWM);
+		pivot 	= new CANTalon(talonCANID);
+		flap 	= new DoubleSolenoid(flapPCMID1, flapPCMID2);
+		intake 	= new VictorSP(intakeMotorPWM);
 		intakeOff(); // ensure off; and set isIntake
-		position = 0;
+		time_count = 0;
+		count_to = 0;
 	}
 	
 	/**
 	 * Instance Methods
 	 */
 	
-	// TODO reset Encoder position
+	public void control(EnhancedDriverStation station) {
+		controlArmSystem(station);
+		controlIntakeSystem(station);
+	}
+	
+	private void controlArmSystem(EnhancedDriverStation station) {
+		
+	}
+	
+	private void controlIntakeSystem(EnhancedDriverStation station) {
+		controlIntake(station);
+		controlFlap(station);
+	}
+	
+	private void controlIntake(EnhancedDriverStation station) {
+		if(station.intakeStatus())
+			intakeOn();
+		else
+			intakeOff();
+	}
+	
+	private void controlFlap(EnhancedDriverStation station) {
+		if(station.flapStatus())
+			openFlap();
+		else
+			closeFlap();
+	}
+	
 	
 	/**
 	 * Rotate arm speed
 	 * @param speed
 	 */
-	public void setSpeed(double speed) {
+	private void setSpeed(double speed) {
 		pivot.set(speed);
 	}
 	
 	/**
 	 * Stops the arm from moving.
 	 */
-	public void stop() {
+	private void stop() {
 		pivot.set(0);
 	}
 	
@@ -81,22 +107,26 @@ public class GearArm {
 	/**
 	 * Open the flap.
 	 */
-	public void releaseFlap() {
-		flap.set(DoubleSolenoid.Value.kForward);
+	private void openFlap() {
+		flap.set(OPEN);
 	}
 	
 	/**
 	 * Close the flap.
 	 */
-	public void closeFlap() {
-		flap.set(DoubleSolenoid.Value.kReverse);
+	private void closeFlap() {
+		flap.set(CLOSE);
 	}
 	
 	/**
 	 * Turn intake wheels on.
 	 */
 	public void intakeOn() {
-		intake.setSpeed(1);
+		intakeOn(1.0);
+	}
+	
+	public void intakeOn(Double val) {
+		intake.setSpeed(val);
 		isIntake = true;
 	}
 	
@@ -104,7 +134,7 @@ public class GearArm {
 	 * Turn intake wheels off.
 	 */
 	public void intakeOff() {
-		intake.setSpeed(0);
+		intake.setSpeed(0.0);
 		isIntake = false;
 	}
 }
