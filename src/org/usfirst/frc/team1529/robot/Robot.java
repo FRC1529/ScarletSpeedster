@@ -16,6 +16,7 @@ public class Robot extends IterativeRobot {
 	// USB Ports
 	private int leftStickPort 	= 0;
 	private int rightStickPort 	= 1;
+	private int OPERATOR_PORT	= 2;
 	
 	// PWM Ports
 	private int YELLOW_PWM 	= 3;
@@ -73,7 +74,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		Logger.log("Initializing the robot...");
-		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort);
+		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 
 		//TODO: have gear arm.

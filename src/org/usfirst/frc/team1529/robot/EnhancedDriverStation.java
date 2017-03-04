@@ -20,6 +20,8 @@ public class EnhancedDriverStation {
 	 */
 	Joystick leftStick;
 	Joystick rightStick;
+	Joystick operator;
+	
 	private static double DEADBAND = .05;
 	private static double STRAIGHT_DEADBAND = 0.1;
 	private static double DOWNSHIFT_DEADBAND = 0.25;
@@ -30,15 +32,30 @@ public class EnhancedDriverStation {
 	
 	/*
 	 * Operator Controls: 8 buttons
-	 * 1.
-	 * 2.
-	 * 3.
-	 * 4.
-	 * 5.
-	 * 6.
-	 * 7.
-	 * 8.
+	 * 1-4 Digital Joystick
+	 * 5-10 Buttons
+	 * 1. Right
+	 * 2. Left
+	 * 3. Up
+	 * 4. Down
+	 * 5. Orange Up
+	 * 6. Orange Down
+	 * 7. White Up
+	 * 8. Black up
+	 * 9. White Down
+	 * 10. Black Down
 	 */
+	
+	private int GEAR_ARM_UP   	= 3;
+	private int GEAR_ARM_DOWN 	= 4;
+	private int FLAP_RELEASE 	= 8;
+	private int INTAKE			= 9;
+	
+	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB, int operatorUSB) {
+		leftStick 	= new Joystick(leftStickUSB);
+		rightStick 	= new Joystick(rightStickUSB);
+		operator 	= new Joystick(operatorUSB);
+	}
 	
 	public boolean shiftUp() {
 		return leftStick.getRawButton(kShiftUpButton);
@@ -46,11 +63,6 @@ public class EnhancedDriverStation {
 	
 	public boolean shiftDown() {
 		return leftStick.getRawButton(kShiftDownButton);
-	}
-	
-	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB) {
-		leftStick = new Joystick(leftStickUSB);
-		rightStick = new Joystick(rightStickUSB);
 	}
 	
 	private boolean isStraight() { return Math.abs(stickValue(leftStick) - stickValue(rightStick)) < STRAIGHT_DEADBAND; }
@@ -99,7 +111,7 @@ public class EnhancedDriverStation {
 	
 	public boolean intakeStatus() {
 		//TODO: add code when buttons ready.
-		return false;
+		return operator.getRawButton(INTAKE);
 	}
 	
 	public boolean flapStatus() {
@@ -108,7 +120,11 @@ public class EnhancedDriverStation {
 	}
 	
 	public int gearArmMode() {
-		//TODO: If up pressed, return 1; if down pressed, return -1
-		return 0;
+		if(operator.getRawButton(GEAR_ARM_UP))
+			return 1;
+		else if(operator.getRawButton(GEAR_ARM_DOWN))
+			return -1;
+		else
+			return 0;
 	}
 }
