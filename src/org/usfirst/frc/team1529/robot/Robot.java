@@ -178,31 +178,10 @@ public class Robot extends IterativeRobot {
 	private int encoder_distance_to_location_from_wall(int inches) {
 		return (inches - length_of_robot_inches) * encoder_count_per_inch;
 	}
-	
-	private void autoCenter() {
-		/* auto_mode_setting
-		 * 0: Peg on gear only
-		 * 1: 2 Gear To Left
-		 * 2: 2 Gear To Right
-		 */
-	}
-	
-	private void findGear(boolean toLeft) {
-		// TODO implement; after pegCenter search for Gear
-	}
-	
-	private void autoLeft() {
-		// TODO something when in position to left of airship;
-	}
-	
-	private void autoRight() {
-		// TODO something when in position to right of airship;
-	}
+
 	
 	@Override
-	public void teleopInit() {
-		tankDrive.resetEncoders();
-	}
+	public void teleopInit() { tankDrive.resetEncoders(); }
 
 	/**
 	 * This function is called periodically during operator control
