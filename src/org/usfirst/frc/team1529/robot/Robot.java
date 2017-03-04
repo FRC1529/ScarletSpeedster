@@ -76,19 +76,10 @@ public class Robot extends IterativeRobot {
 		Logger.log("Initializing the robot...");
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort);
 		tankDrive 	= new TankDriveSystem(this, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
-		/* GearArm: Picks up and places gears.
-		 * Inputs:
-		 * 1. talonCANID: 		0 // some setup will probablly be needed
-		 * 2. flapPCMID1: 		4 // See Pneumatic Control Module (PCM)
-		 * 3. flapPCMID2: 		5 // See PCM
-		 * 4. intakeMotorPWM: 	0 // See RoboRio PWM ports
-		 */
-//			gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
-		
-//		setupHDCamera(1920, 1080, 10);
-		
-		//PixyCam set up
 
+		//TODO: have gear arm.
+//			gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
+		setupHDCamera(1920, 1080, 10);
 	}
 	
 	/**
@@ -117,17 +108,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		/**
-		 * Various options:
-		 * -Center position, cross baseline
-		 * -Center position
-		 * -Center position; pick up gear left
-		 * -Center position; pick up gear right
-		 * -Left position (1 gear on peg only)
-		 * -Right position (1 gear on peg only)
-		 */
-		auto_mode_position = 0; // TODO implement chooser
-		auto_mode_setting = 0; 	// TODO implement chooser
+		// TODO: need to implement chooser with drive.
 		
 		auto_step = 1;
 		
@@ -142,18 +123,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		/* auto_mode_position: center, left of airship, right of airship
-		 * 0: Center
-		 * 1: Left
-		 * 2: Right
-		 * else: do nothing
-		 */
-		
-//			switch(auto_mode_position) {
-//				case 0: autoCenter(); break;
-//				case 1: autoLeft(); break;
-//				case 2: autoRight(); break;
-//			}
 		Logger.log("Auto Periodic");
 		clearBaseline();
 	}
