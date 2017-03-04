@@ -38,12 +38,11 @@ public class Robot extends IterativeRobot {
 	private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM, RIGHT_A_DIO, RIGHT_B_DIO};
 
 	// CAN ID
-	private int PDP_CANID			= 0;
+//	private int PDP_CANID			= 0; // NOT USED
 	private int PCM_CANID			= 0;
 	private int gearArmTalonCANID 	= 0;
 	
 	// PCM Ports
-	// TODO: figure this out: 0-7
 	private int flap_out 	= 2;
 	private int flap_in 	= 3;
 	private int intakeMotor = WHITE_PWM;
@@ -77,8 +76,6 @@ public class Robot extends IterativeRobot {
 		Logger.log("Initializing the robot...");
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
-
-		//TODO: have gear arm.
 		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		setupHDCamera(1920, 1080, 10);
 	}
@@ -130,18 +127,18 @@ public class Robot extends IterativeRobot {
 	
 	private void clearBaseline() {
 		Logger.log("Clearing baseline");
-		String msg = String.format("Step: %d", auto_step);
-		int inches_to_baseline_from_wall = 20; // 7 ft 9.25 inches
 		switch(auto_step) {
 		case 1: tankDrive.autoMoveTo(550); break;
 		}
 	}
 	
+	
+	
 	private void firstGearOnPeg() {
 		Logger.log("Placing gear");
 		int inches_to_peg_from_wall = 9*12 + 10; // 9 ft 10 inches;
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(encoder_distance_to_location_from_wall(inches_to_peg_from_wall)); break;
+		case 1: tankDrive.autoMoveTo(0); break;
 		}
 	}
 	
