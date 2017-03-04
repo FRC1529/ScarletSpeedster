@@ -209,21 +209,26 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		// Check button to set drive_mode
-		// Can only shift to climbing mode; cannot shift back
-		// check button to see if should be in climb-mode
-		if(station.shiftToClimber()) {
+		
+		if (drive_mode) { // can only shift to climb mode, cannot shift back at this time.
+			teleopDrive(); // Can either do driving/setting gears
+			shiftToClimb();
+		}
+		else
+			teleopClimb(); // Or climb
+	}
+	
+	
+	/**
+	 * Checks to see if should shift to climb mode, and do so if controller pushes correct buttons to shift to climb.
+	 */
+	private void shiftToClimb() {
+		if(drive_mode && station.shiftToClimber()) {
 			if (drive_mode)
 				Logger.log("Shifting to Climb");
-			// TODO actually engage pneumatic to shift to climb mode.
+			tankDrive.shiftToClimb();
 			drive_mode = false;
 		}
-
-		if (drive_mode) {
-			teleopDrive(); // Can either do driving/setting gears
-			teleopGearArm(); // Control the gear arm and intake system
-		} else
-			teleopClimb(); // Or climb
 	}
 	
 	/**
@@ -232,7 +237,7 @@ public class Robot extends IterativeRobot {
 	private void teleopDrive() {
 		Logger.log("Teleop Drive");
 		tankDrive.drive(station); // push implementation to tankDrive System
-		// TODO implement gear arm controls here.
+		teleopGearArm();
 	}
 	
 	private void teleopGearArm() {

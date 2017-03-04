@@ -107,9 +107,9 @@ public class TankDriveSystem {
 	
 	/**
 	 * shiftToClimb: shifts the pneumatic solenoid out such that it shifts the drive motors to the climb system.
-	 * @param station
+	 * 
 	 */
-	public void shiftToClimb(EnhancedDriverStation station) {
+	public void shiftToClimb() {
 		Logger.log("Shifted to climb!");
 		climbShifter.set(FORWARD);
 	}
