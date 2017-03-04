@@ -128,7 +128,7 @@ public class Robot extends IterativeRobot {
 	private void clearBaseline() {
 		Logger.log("Clearing baseline");
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(550); break;
+		case 1: tankDrive.autoMoveTo(750); break;
 		}
 	}
 	
