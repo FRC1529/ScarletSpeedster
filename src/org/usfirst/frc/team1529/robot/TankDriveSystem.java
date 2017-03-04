@@ -10,7 +10,6 @@ public class TankDriveSystem {
 	/* Left and Right Drive
 	 * inputs: PWM ports for 3 victors per side
 	 */
-	// TODO make sure left and right drive's direction is set correctly.
 	DriveSystem leftDrive, rightDrive;
 	
 	/* Pneumatic Shifter
@@ -25,7 +24,6 @@ public class TankDriveSystem {
 	private DoubleSolenoid.Value SHIFT_UP 	= REVERSE;
 	private DoubleSolenoid.Value SHIFT_DN 	= FORWARD;
 	
-	// TODO Encoder
 	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
 	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
 	private int ENCODER_BAND = 3;
@@ -88,7 +86,7 @@ public class TankDriveSystem {
 	
 	private boolean isUpShifted(DoubleSolenoid shifter) { return shifter.get() == SHIFT_UP; }
 	private boolean isDownShifted(DoubleSolenoid shifter) { return shifter.get() == SHIFT_DN; }
-	
+
 	private void downShift() { downShift("Down shifting..."); }
 	
 	private void downShift(String msg) {
@@ -96,9 +94,7 @@ public class TankDriveSystem {
 		driveShifter.set(SHIFT_DN);
 	}
 	
-	private void upShift() {
-		upShift("Shifting Up");
-	}
+	private void upShift() { upShift("Shifting Up"); }
 	
 	private void upShift(String msg) {
 		Logger.log(msg);
