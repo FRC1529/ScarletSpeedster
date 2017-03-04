@@ -5,7 +5,7 @@ package org.usfirst.frc.team1529.robot;
 
 import com.ctre.CANTalon; // For pivot of arm
 import edu.wpi.first.wpilibj.DoubleSolenoid; // for basket release flap
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder; // NOT CURRENTLY USING ENCODER ON THE ARM.
 import edu.wpi.first.wpilibj.VictorSP; // for intake wheel
 
 /**
@@ -19,10 +19,6 @@ public class GearArm {
 	CANTalon pivot;
 
 	// Encoder to measure rotation ********************
-	private int time_count;
-	private int count_to;
-	private int current_mode; // -1: down; 0: nowhere; 1: up
-	private int last_mode;
 	
 	// Intake System **********************************
 	DoubleSolenoid flap; // Pneumatic Flap
@@ -65,15 +61,13 @@ public class GearArm {
 		Logger.log("TRYING TO SET ARM");
 		if(station.armUp()) {
 			pivot.set(1.0);
-		} else {
-			pivot.set(0.0);
-		}
+		} else
+			stop();
 		
 		if(station.armDown()) {
 			pivot.set(-arm_speed);
-		} else {
-			pivot.set(0.0);
-		}
+		} else
+			stop();
 	}
 	
 	private void controlIntakeSystem(EnhancedDriverStation station) {
@@ -111,7 +105,7 @@ public class GearArm {
 	 * Rotate arm speed
 	 * @param speed
 	 */
-	private void setSpeed(double speed) { pivot.set(speed); }
+//	private void setSpeed(double speed) { pivot.set(speed); } // NOT USED
 	
 	/**
 	 * Stops the arm from moving.

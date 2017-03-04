@@ -62,8 +62,8 @@ public class Robot extends IterativeRobot {
 	int auto_mode_position = 0; 	// details in autoInit()
 	int auto_mode_setting  = 0; 	// details in autoCenter()
 	int auto_step;
-	private int encoder_count_per_inch = 440 / 24;
-	private int length_of_robot_inches = 3 * 12;
+//	private int encoder_count_per_inch = 440 / 24; // UNTESTED; NOT USED
+//	private int length_of_robot_inches = 3 * 12; // UNTESTED; NOT USED
 	
 	
 	// NOTE: Climber system is built into Tank Drive.
@@ -133,18 +133,22 @@ public class Robot extends IterativeRobot {
 	}
 	
 	
+	/**
+	 * NOT TESTED OR USED YET.
+	 */
+//	private void firstGearOnPeg() {
+//		Logger.log("Placing gear");
+////		int inches_to_peg_from_wall = 9*12 + 10; // 9 ft 10 inches; // NOT TESTED OR USED
+//		switch(auto_step) {
+//		case 1: tankDrive.autoMoveTo(0); break;
+//		}
+//	}
+
 	
-	private void firstGearOnPeg() {
-		Logger.log("Placing gear");
-		int inches_to_peg_from_wall = 9*12 + 10; // 9 ft 10 inches;
-		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(0); break;
-		}
-	}
-	
-	private int encoder_distance_to_location_from_wall(int inches) {
-		return (inches - length_of_robot_inches) * encoder_count_per_inch;
-	}
+	//TODO: Unreliable; needs testing.
+//	private int encoder_distance_to_location_from_wall(int inches) {
+//		return (inches - length_of_robot_inches) * encoder_count_per_inch;
+//	}
 
 	
 	@Override

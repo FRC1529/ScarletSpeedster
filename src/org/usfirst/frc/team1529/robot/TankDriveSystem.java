@@ -20,7 +20,7 @@ public class TankDriveSystem {
 	DoubleSolenoid climbShifter;
 	private DoubleSolenoid.Value FORWARD 	= DoubleSolenoid.Value.kForward;
 	private DoubleSolenoid.Value REVERSE 	= DoubleSolenoid.Value.kReverse;
-	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff;
+//	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff; // NOT USED
 	private DoubleSolenoid.Value SHIFT_UP 	= FORWARD;
 	private DoubleSolenoid.Value SHIFT_DN 	= REVERSE;
 	
@@ -155,18 +155,23 @@ public class TankDriveSystem {
 		}
 	}
 	
-	private double pSpeedSet(DriveSystem drive, int target) {
-		double kP = 0.15;
-		int max_encoder_distance = 50;
-		int encoder_distance = target - drive.encoder.get();
-		if(encoder_distance > max_encoder_distance) {
-			return 1.0;
-		} else if(encoder_distance < -max_encoder_distance) {
-			return -1.0;
-		} else {
-			return kP * (max_encoder_distance - encoder_distance) / max_encoder_distance;
-		}
-	}
+	/**
+	 * Untested code.
+	 * @param drive
+	 * @param target
+	 */
+//	private double pSpeedSet(DriveSystem drive, int target) {
+//		double kP = 0.15;
+//		int max_encoder_distance = 50;
+//		int encoder_distance = target - drive.encoder.get();
+//		if(encoder_distance > max_encoder_distance) {
+//			return 1.0;
+//		} else if(encoder_distance < -max_encoder_distance) {
+//			return -1.0;
+//		} else {
+//			return kP * (max_encoder_distance - encoder_distance) / max_encoder_distance;
+//		}
+//	}
 	
 	private void encoderSetDrive(DriveSystem drive, int target) {
 		double speed = -0.20;
