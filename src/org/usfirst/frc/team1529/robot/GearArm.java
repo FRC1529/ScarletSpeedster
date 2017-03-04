@@ -21,6 +21,8 @@ public class GearArm {
 	// Encoder to measure rotation ********************
 	private int time_count;
 	private int count_to;
+	private int current_mode; // -1: down; 0: nowhere; 1: up
+	private int last_mode;
 	
 	// Intake System **********************************
 	DoubleSolenoid flap; // Pneumatic Flap
@@ -47,6 +49,8 @@ public class GearArm {
 		intakeOff(); // ensure off; and set isIntake
 		time_count = 0;
 		count_to = 0;
+		current_mode = 0;
+		last_mode = 0;
 	}
 	
 	/**
@@ -59,7 +63,8 @@ public class GearArm {
 	}
 	
 	private void controlArmSystem(EnhancedDriverStation station) {
-		
+		// TODO: setup how to control the arm 
+		// with or without encoder?
 	}
 	
 	private void controlIntakeSystem(EnhancedDriverStation station) {
@@ -86,45 +91,32 @@ public class GearArm {
 	 * Rotate arm speed
 	 * @param speed
 	 */
-	private void setSpeed(double speed) {
-		pivot.set(speed);
-	}
+	private void setSpeed(double speed) { pivot.set(speed); }
 	
 	/**
 	 * Stops the arm from moving.
 	 */
-	private void stop() {
-		pivot.set(0);
-	}
+	private void stop() { pivot.set(0); }
 	
-	// TODO set Arm position; need encoder; probably PID controller
-	
-
-	
-	/*
-	 * Intake sub-system methods
-	 */
 	/**
 	 * Open the flap.
 	 */
-	private void openFlap() {
-		flap.set(OPEN);
-	}
+	private void openFlap() { flap.set(OPEN); }
 	
 	/**
 	 * Close the flap.
 	 */
-	private void closeFlap() {
-		flap.set(CLOSE);
-	}
+	private void closeFlap() { flap.set(CLOSE); }
 	
 	/**
 	 * Turn intake wheels on.
 	 */
-	public void intakeOn() {
-		intakeOn(1.0);
-	}
+	public void intakeOn() { intakeOn(1.0); }
 	
+	/**
+	 * Set intake speed. Created to adjust more quickly elsewhere in code, if needed.
+	 * @param val
+	 */
 	public void intakeOn(Double val) {
 		intake.setSpeed(val);
 		isIntake = true;

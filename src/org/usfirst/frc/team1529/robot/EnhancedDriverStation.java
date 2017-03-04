@@ -106,4 +106,9 @@ public class EnhancedDriverStation {
 		//TODO: add code when buttons are ready.
 		return false;
 	}
+	
+	public int gearArmMode() {
+		//TODO: If up pressed, return 1; if down pressed, return -1
+		return 0;
+	}
 }
