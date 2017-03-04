@@ -21,8 +21,8 @@ public class TankDriveSystem {
 	private DoubleSolenoid.Value FORWARD 	= DoubleSolenoid.Value.kForward;
 	private DoubleSolenoid.Value REVERSE 	= DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff;
-	private DoubleSolenoid.Value SHIFT_UP 	= REVERSE;
-	private DoubleSolenoid.Value SHIFT_DN 	= FORWARD;
+	private DoubleSolenoid.Value SHIFT_UP 	= FORWARD;
+	private DoubleSolenoid.Value SHIFT_DN 	= REVERSE;
 	
 	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
 	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
@@ -38,7 +38,7 @@ public class TankDriveSystem {
 		robot = theRobot;
 		
 		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4], LEFT_ENCODER_REVERSE_DIRECTION);
-		rightDrive 	= new DriveSystem(true, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
+		rightDrive 	= new DriveSystem(false, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
 		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
 		driveShifter.set(SHIFT_DN);
 		
@@ -143,9 +143,10 @@ public class TankDriveSystem {
 	}
 	
 	public void autoMoveTo(int leftTarget, int rightTarget) {
+		Logger.log("******auto move to******");
 		printEncoders();
-		pSpeedSet(leftDrive, leftTarget);
-		pSpeedSet(rightDrive, rightTarget);
+		encoderSetDrive(leftDrive, leftTarget);
+		encoderSetDrive(rightDrive, rightTarget);
 		if(isTargetReached(leftTarget, rightTarget)) {
 			Logger.log(String.format("Step %d was successfully achieved.", robot.auto_step));
 			robot.auto_step++;
@@ -167,16 +168,16 @@ public class TankDriveSystem {
 		}
 	}
 	
-//	private void encoderSetDrive(DriveSystem drive, int target) {
-//		double speed = 0.25;
-//		if(drive.encoder.get() < target - ENCODER_BAND) {
-//			drive.setSpeed(-speed);
-//		} else if (drive.encoder.get() > target + ENCODER_BAND) {
-//			drive.setSpeed(speed);
-//		} else {
-//			drive.setSpeed(0.0);
-//		}
-//	}
+	private void encoderSetDrive(DriveSystem drive, int target) {
+		double speed = -0.15;
+		if(drive.encoder.get() < target - ENCODER_BAND) {
+			drive.setSpeed(speed);
+		} else if (drive.encoder.get() > target + ENCODER_BAND) {
+			drive.setSpeed(-speed);
+		} else {
+			drive.setSpeed(0.0);
+		}
+	}
 	
 	private boolean isTargetReached(int leftTarget, int rightTarget) {
 		return isReached(leftDrive, leftTarget) && isReached(rightDrive, rightTarget);

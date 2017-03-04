@@ -28,6 +28,7 @@ public class GearArm {
 	DoubleSolenoid flap; // Pneumatic Flap
 	private DoubleSolenoid.Value OPEN 	= DoubleSolenoid.Value.kForward;
 	private DoubleSolenoid.Value CLOSE 	= DoubleSolenoid.Value.kReverse;
+	private DoubleSolenoid.Value OFF	= DoubleSolenoid.Value.kOff;
 	VictorSP intake;// Intake Motor Victor
 	boolean isIntake;
 	
@@ -46,11 +47,8 @@ public class GearArm {
 		pivot 	= new CANTalon(talonCANID);
 		flap 	= new DoubleSolenoid(flapPCMID1, flapPCMID2);
 		intake 	= new VictorSP(intakeMotorPWM);
+		flap.set(CLOSE);
 		intakeOff(); // ensure off; and set isIntake
-		time_count = 0;
-		count_to = 0;
-		current_mode = 0;
-		last_mode = 0;
 	}
 	
 	/**
@@ -63,8 +61,19 @@ public class GearArm {
 	}
 	
 	private void controlArmSystem(EnhancedDriverStation station) {
-		// TODO: setup how to control the arm 
-		// with or without encoder?
+		double arm_speed = 0.1;
+		Logger.log("TRYING TO SET ARM");
+		if(station.armUp()) {
+			pivot.set(1.0);
+		} else {
+			pivot.set(0.0);
+		}
+		
+		if(station.armDown()) {
+			pivot.set(-arm_speed);
+		} else {
+			pivot.set(0.0);
+		}
 	}
 	
 	private void controlIntakeSystem(EnhancedDriverStation station) {
@@ -73,17 +82,26 @@ public class GearArm {
 	}
 	
 	private void controlIntake(EnhancedDriverStation station) {
-		if(station.intakeStatus())
+		if(station.isIntake())
 			intakeOn();
+		else if(station.isOuttake())
+			outtakeOn();
 		else
 			intakeOff();
 	}
 	
 	private void controlFlap(EnhancedDriverStation station) {
-		if(station.flapStatus())
+		if(station.flapOpen())
 			openFlap();
-		else
+		else if(!station.flapOff())
 			closeFlap();
+		
+		if(station.flapOff())
+			flapOff();
+	}
+	
+	private void flapOff() {
+		flap.set(OFF);
 	}
 	
 	
@@ -113,12 +131,14 @@ public class GearArm {
 	 */
 	public void intakeOn() { intakeOn(1.0); }
 	
+	public void outtakeOn() { intakeOn(-1.0); }
+	
 	/**
 	 * Set intake speed. Created to adjust more quickly elsewhere in code, if needed.
 	 * @param val
 	 */
 	public void intakeOn(Double val) {
-		intake.setSpeed(val);
+		intake.setSpeed(-val);
 		isIntake = true;
 	}
 	

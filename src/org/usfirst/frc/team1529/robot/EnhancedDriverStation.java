@@ -46,10 +46,12 @@ public class EnhancedDriverStation {
 	 * 10. Black Down
 	 */
 	
-	private int GEAR_ARM_UP   	= 3;
-	private int GEAR_ARM_DOWN 	= 4;
-	private int FLAP_RELEASE 	= 8;
-	private int INTAKE			= 9;
+	private int GEAR_ARM_UP   	= 4; // Operator controller
+	private int GEAR_ARM_DOWN 	= 3; // Operator controller
+	private int FLAP_RELEASE 	= 8; // Operator controller
+	private int INTAKE			= 9; // Operator controller
+	private int OUTTAKE			= 7;
+	private int FLAP_OFF		= 10; // Operator controller
 	
 	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB, int operatorUSB) {
 		leftStick 	= new Joystick(leftStickUSB);
@@ -126,5 +128,34 @@ public class EnhancedDriverStation {
 			return -1;
 		else
 			return 0;
+	}
+	
+	public boolean armUp() {
+		if(operator.getRawButton(GEAR_ARM_UP))
+			Logger.log("Arm UP*****************************");
+		return operator.getRawButton(GEAR_ARM_UP);
+	}
+	
+	public boolean armDown() {
+		if(operator.getRawButton(GEAR_ARM_DOWN));
+			Logger.log("ARM DOWN************#^*@&^*(#^(*@#*^&#(*&^@#*(&^(*#&^(*@#^(*@#^");
+		return operator.getRawButton(GEAR_ARM_DOWN);
+	}
+	
+	public boolean isIntake() {
+		Logger.log(String.format("Button value: %s: ", operator.getRawButton(INTAKE)));
+		return operator.getRawButton(INTAKE);
+	}
+	
+	public boolean isOuttake() {
+		return operator.getRawButton(OUTTAKE);
+	}
+	
+	public boolean flapOpen() {
+		return operator.getRawButton(FLAP_RELEASE);
+	}
+	
+	public boolean flapOff() {
+		return operator.getRawButton(FLAP_OFF);
 	}
 }

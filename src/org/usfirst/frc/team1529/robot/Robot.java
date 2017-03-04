@@ -44,10 +44,11 @@ public class Robot extends IterativeRobot {
 	
 	// PCM Ports
 	// TODO: figure this out: 0-7
-	private int flap_out 	= 100;
-	private int flap_in 	= 100;
+	private int flap_out 	= 2;
+	private int flap_in 	= 3;
+	private int intakeMotor = WHITE_PWM;
 	private int[] DRIVE_SOLENOID = {PCM_CANID, 0, 1};
-	private int[] CLIMB_SOLENOID = {PCM_CANID, 2, 3};
+	private int[] CLIMB_SOLENOID = {PCM_CANID, 4, 5};
 	
 	//I2C device addresses
 //		private int pixycam1_address = 0x54;
@@ -78,7 +79,7 @@ public class Robot extends IterativeRobot {
 		tankDrive 	= new TankDriveSystem(this, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 
 		//TODO: have gear arm.
-//			gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in, intakeMotor);
+		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		setupHDCamera(1920, 1080, 10);
 	}
 	
@@ -129,10 +130,10 @@ public class Robot extends IterativeRobot {
 	
 	private void clearBaseline() {
 		Logger.log("Clearing baseline");
-		
-		int inches_to_baseline_from_wall = 7 * 12 + 10; // 7 ft 9.25 inches
+		String msg = String.format("Step: %d", auto_step);
+		int inches_to_baseline_from_wall = 20; // 7 ft 9.25 inches
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(encoder_distance_to_location_from_wall(inches_to_baseline_from_wall)); break;
+		case 1: tankDrive.autoMoveTo(400); break;
 		}
 	}
 	
