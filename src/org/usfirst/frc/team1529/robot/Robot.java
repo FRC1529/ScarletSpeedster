@@ -209,12 +209,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
 		if (drive_mode) { // can only shift to climb mode, cannot shift back at this time.
 			teleopDrive(); // Can either do driving/setting gears
 			shiftToClimb();
-		}
-		else
+		} else
 			teleopClimb(); // Or climb
 	}
 	
@@ -251,12 +249,5 @@ public class Robot extends IterativeRobot {
 	private void teleopClimb() {
 		Logger.log("Teleop Climb");
 		tankDrive.climb(station); // push implementation to tankDrive System
-	}
-
-	/**
-	 * This function is called periodically during test mode
-	 */
-	@Override
-	public void testPeriodic() {
 	}
 }
