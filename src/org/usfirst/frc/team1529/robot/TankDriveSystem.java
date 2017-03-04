@@ -169,7 +169,7 @@ public class TankDriveSystem {
 	}
 	
 	private void encoderSetDrive(DriveSystem drive, int target) {
-		double speed = -0.15;
+		double speed = -0.20;
 		if(drive.encoder.get() < target - ENCODER_BAND) {
 			drive.setSpeed(speed);
 		} else if (drive.encoder.get() > target + ENCODER_BAND) {

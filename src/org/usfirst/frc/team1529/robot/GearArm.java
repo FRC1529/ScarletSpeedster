@@ -93,10 +93,12 @@ public class GearArm {
 	private void controlFlap(EnhancedDriverStation station) {
 		if(station.flapOpen())
 			openFlap();
-		else if(!station.flapOff())
-			closeFlap();
+		else
+			flapOff();
 		
-		if(station.flapOff())
+		if(station.flapClose())
+			closeFlap();
+		else
 			flapOff();
 	}
 	

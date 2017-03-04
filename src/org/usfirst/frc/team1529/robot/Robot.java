@@ -133,7 +133,7 @@ public class Robot extends IterativeRobot {
 		String msg = String.format("Step: %d", auto_step);
 		int inches_to_baseline_from_wall = 20; // 7 ft 9.25 inches
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(400); break;
+		case 1: tankDrive.autoMoveTo(550); break;
 		}
 	}
 	

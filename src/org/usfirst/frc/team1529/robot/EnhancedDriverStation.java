@@ -48,10 +48,12 @@ public class EnhancedDriverStation {
 	
 	private int GEAR_ARM_UP   	= 4; // Operator controller
 	private int GEAR_ARM_DOWN 	= 3; // Operator controller
-	private int FLAP_RELEASE 	= 8; // Operator controller
-	private int INTAKE			= 9; // Operator controller
-	private int OUTTAKE			= 7;
-	private int FLAP_OFF		= 10; // Operator controller
+	
+	private int FLAP_OPEN 		= 6; // Operator controller
+	private int FLAP_CLOSE		= 9;
+	private int INTAKE			= 10; // Operator controller
+	private int OUTTAKE			= 8;
+//	private int FLAP_OFF		= 10; // Operator controller
 	
 	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB, int operatorUSB) {
 		leftStick 	= new Joystick(leftStickUSB);
@@ -152,10 +154,14 @@ public class EnhancedDriverStation {
 	}
 	
 	public boolean flapOpen() {
-		return operator.getRawButton(FLAP_RELEASE);
+		return operator.getRawButton(FLAP_OPEN);
 	}
 	
-	public boolean flapOff() {
-		return operator.getRawButton(FLAP_OFF);
+	public boolean flapClose() {
+		return operator.getRawButton(FLAP_CLOSE);
 	}
+	
+//	public boolean flapOff() {
+//		return operator.getRawButton(FLAP_OFF);
+//	}
 }
