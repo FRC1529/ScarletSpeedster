@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.VictorSP; // for intake wheel
  *
  */
 public class GearArm {
+	
+	private boolean intake_enabled;
 	/*
 	 * Instance Variables
 	 */
@@ -40,6 +42,8 @@ public class GearArm {
 	 * @param intakeMotorPWM
 	 */
 	public GearArm(int talonCANID, int flapPCMID1, int flapPCMID2, int intakeMotorPWM) {
+//		enableIntake(); //TODO: currently just sets and returns enable_intake; potentially want to disable.
+		
 		pivot 	= new CANTalon(talonCANID);
 		flap 	= new DoubleSolenoid(flapPCMID1, flapPCMID2);
 		intake 	= new VictorSP(intakeMotorPWM);
@@ -145,4 +149,11 @@ public class GearArm {
 		intake.setSpeed(0.0);
 		isIntake = false;
 	}
+	
+	
+	//TODO: only potential code. Not implemented yet.
+	//TODO: update comment when implemented.
+	private boolean enableIntake() { return intake_enabled = true; }
+	
+	private boolean disableIntake() { return intake_enabled = false; }
 }
