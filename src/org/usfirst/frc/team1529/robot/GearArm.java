@@ -120,7 +120,7 @@ public class GearArm {
 	/**
 	 * Close the flap.
 	 */
-	private void closeFlap() { flap.set(CLOSE); }
+	public void closeFlap() { flap.set(CLOSE); }
 	
 	/**
 	 * Turn intake wheels on.

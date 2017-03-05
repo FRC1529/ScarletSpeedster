@@ -109,6 +109,7 @@ public class Robot extends IterativeRobot {
 		// TODO: need to implement chooser with drive.
 		
 		auto_step = 1;
+		gearArm.closeFlap();
 		
 		tankDrive.resetEncoders();
 		Logger.log("-----------------Auto Init---------------");
@@ -123,6 +124,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Logger.log("Auto Periodic");
 		clearBaseline();
+		
 	}
 	
 	private void clearBaseline() {
