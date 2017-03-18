@@ -22,17 +22,21 @@ public class EnhancedDriverStation {
 	Joystick rightStick;
 	Joystick operator;
 	
-	private static double TOREY_STRAIGHT_BAND = 0.1;
-	private static double PARKER_STRAIGHT_BAND = 0.15;
-	private static double ATHENA_STRAIGHT_BAND = 0.15;
-	
-	private static double DEADBAND = .05;
-	private static double STRAIGHT_DEADBAND = PARKER_STRAIGHT_BAND;
-	private static double DOWNSHIFT_DEADBAND = 0.25;
-	private static double UPSHIFT_DEADBAND = 0.8;
+	private double DEADBAND = .05;
+	private double DEFAULT_STRAIGHT_BAND = 0.1;
+	private double STRAIGHT_BAND;
+	private double DOWNSHIFT_DEADBAND = 0.25;
+	private double UPSHIFT_DEADBAND = 0.8;
 	
 	private static int kShiftUpButton = 7;
 	private static int kShiftDownButton = 8;
+	
+	// Drivers
+	private Driver defaultDriver = new Driver(DEFAULT_STRAIGHT_BAND);
+	private Driver torey 	= new Driver(0.1);
+	private Driver parker 	= new Driver(0.2);
+	private Driver athena 	= new Driver(0.15);
+	private Driver currentDriver = parker; // set driver here
 	
 	/*
 	 * Operator Controls: 8 buttons
@@ -60,6 +64,7 @@ public class EnhancedDriverStation {
 //	private int FLAP_OFF		= 10; // Operator controller
 	
 	public EnhancedDriverStation(int leftStickUSB, int rightStickUSB, int operatorUSB) {
+		STRAIGHT_BAND = currentDriver.getStraightBand();
 		leftStick 	= new Joystick(leftStickUSB);
 		rightStick 	= new Joystick(rightStickUSB);
 		operator 	= new Joystick(operatorUSB);
@@ -73,7 +78,7 @@ public class EnhancedDriverStation {
 		return leftStick.getRawButton(kShiftDownButton);
 	}
 	
-	private boolean isStraight() { return Math.abs(stickValue(leftStick) - stickValue(rightStick)) < STRAIGHT_DEADBAND; }
+	private boolean isStraight() { return Math.abs(stickValue(leftStick) - stickValue(rightStick)) < STRAIGHT_BAND; }
 	
 	private double avgValue() { return (stickValue(leftStick) + stickValue(rightStick))/ 2.0; }
 	
