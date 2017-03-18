@@ -22,8 +22,12 @@ public class EnhancedDriverStation {
 	Joystick rightStick;
 	Joystick operator;
 	
+	private static double TOREY_STRAIGHT_BAND = 0.1;
+	private static double PARKER_STRAIGHT_BAND = 0.15;
+	private static double ATHENA_STRAIGHT_BAND = 0.15;
+	
 	private static double DEADBAND = .05;
-	private static double STRAIGHT_DEADBAND = 0.1;
+	private static double STRAIGHT_DEADBAND = PARKER_STRAIGHT_BAND;
 	private static double DOWNSHIFT_DEADBAND = 0.25;
 	private static double UPSHIFT_DEADBAND = 0.8;
 	
