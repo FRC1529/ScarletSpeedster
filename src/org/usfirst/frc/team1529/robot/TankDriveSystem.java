@@ -166,15 +166,15 @@ public class TankDriveSystem {
 	public void autoMoveTo(int encoder_counts) { autoMoveTo(encoder_counts, encoder_counts); }
 	
 	public void autoMoveTo(int leftTarget, int rightTarget) {
-		Logger.log("******auto move to******");
+		String msg = String.format("********* Auto Moving to: left: %d; right: %d", leftTarget, rightTarget);
+		Logger.log(msg);
 		printEncoders();
-		encoderSetDrive(leftDrive, leftTarget);
-		encoderSetDrive(rightDrive, rightTarget);
+		encoderSetDriveAdvanced(leftDrive, leftTarget, "Left");
+		encoderSetDriveAdvanced(rightDrive, rightTarget, "Right");
 		if(isTargetReached(leftTarget, rightTarget)) {
 			Logger.log(String.format("Step %d was successfully achieved.", robot.auto_step));
 			robot.auto_step++;
-			leftDrive.encoder.reset();
-			rightDrive.encoder.reset();
+			resetEncoders();
 		}
 	}
 	
@@ -196,19 +196,109 @@ public class TankDriveSystem {
 //		}
 //	}
 	
-	private void encoderSetDrive(DriveSystem drive, int target) {
-		double speed = -0.20;
+	private void encoderSetDrive(DriveSystem drive, int target, String driveName) {
+		double direction = -1.0;
+		double speed = direction * 0.3;
+		
 		if(drive.encoder.get() < target - ENCODER_BAND) {
-			drive.setSpeed(speed);
+			// do nothing
 		} else if (drive.encoder.get() > target + ENCODER_BAND) {
-			drive.setSpeed(-speed);
+			speed = -speed;
 		} else {
-			drive.setSpeed(0.0);
+			speed = 0.0;
 		}
+		
+//		String msg = String.format("Encoder value: %d; target: %d; Encoder Band: %d; Speed: %d", drive.encoder.get(), target, ENCODER_BAND, speed);
+		Logger.log(String.format("-----------------%s------------", driveName));
+		String enc = String.format("Encoder Value: %d", drive.encoder.get());
+		String tar = String.format("Target: %d", target);
+		String band = String.format("Encoder Band: %d", ENCODER_BAND);
+		String spd = String.format("Speed: %f", speed);
+		Logger.log(enc);
+		Logger.log(tar);
+		Logger.log(band);
+		Logger.log(spd);
+		
+		drive.setSpeed(speed);
+	}
+	
+	private void logAutoStatus(String name, DriveSystem drive, int target, int error, double speed) {
+		Logger.log(String.format("-----------------%s------------", name));
+		String enc = String.format("Encoder Value: %d", drive.encoder.get());
+		String tar = String.format("Target: %d", target);
+		String band = String.format("Error: %d", error);
+		String spd = String.format("Speed: %f", speed);
+		Logger.log(enc);
+		Logger.log(tar);
+		Logger.log(band);
+		Logger.log(spd);
+	}
+	
+	private void encoderSetDriveAdvanced(DriveSystem drive, int target, String driveName) {
+		Logger.log("Advanced Encoder Setting");
+		int error = target - drive.encoder.get();
+		double direction = -1.0;
+		int max_error = 700;
+		
+		double max_speed;
+		if(error > max_error) {
+			max_speed = 0.5;
+		} else {
+			max_speed = 0.35;
+		}
+		double min_speed = 0.1;
+		
+		int error_tolerance = 25;
+		
+		double speed;
+		
+		if(Math.abs(error) > max_error) {
+			Logger.log("Above max speed");
+			if(error > 0) {
+				speed = direction * max_speed;
+			} else {
+				speed = -1.0 * direction * max_speed;
+			}
+		} else if(Math.abs(error) <= error_tolerance) {
+			Logger.log("Within tolerance");
+			speed = 0.0;
+		} else {
+			Logger.log("Somewhere in between tolerance and max speed.");
+			speed = direction * speedSettingAlternate(max_speed, max_error, error, min_speed, error_tolerance);
+		}
+		
+		logAutoStatus(driveName, drive, target, error, speed);
+		
+		drive.setSpeed(speed);
+	}
+	
+	private double speedSetting(double maxSpeed, int maxError, int error, double power) {
+		double val = (double) maxError;
+		String msg = String.format("Max speed: %f\nMax Error: %d\nError: %d\nTo the power of: %f", maxSpeed, maxError, error, power);
+		Logger.log(msg);
+		double speedToSet = maxSpeed / (Math.pow(val, power)) * ((double) error);
+		return speedToSet;
+	}
+	
+	private double speedSettingAlternate(double maxSpeed, int maxError, int error, double minSpeed, int tolerance) {
+		double t = (double) tolerance;
+		double maxErr = (double) maxError;
+		double slope = (minSpeed - maxSpeed) / (t - maxErr);
+		double intercept = minSpeed - slope * t;
+		double speed = line(slope, intercept, Math.abs((double) error));
+		if(error < 0) { speed = -speed; }
+		return speed;
+	}
+	
+	private double line(double slope, double intercept, double x) {
+		return slope * x + intercept;
 	}
 	
 	private boolean isTargetReached(int leftTarget, int rightTarget) {
-		return isReached(leftDrive, leftTarget) && isReached(rightDrive, rightTarget);
+		boolean value = isReached(leftDrive, leftTarget) && isReached(rightDrive, rightTarget);
+		String msg = String.format("Is Target reached? %s", value);
+		Logger.log(msg);
+		return value;
 	}
 	
 	private boolean isReached(DriveSystem drive, int target) {

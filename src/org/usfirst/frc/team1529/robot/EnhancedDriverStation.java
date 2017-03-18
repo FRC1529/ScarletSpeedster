@@ -26,7 +26,7 @@ public class EnhancedDriverStation {
 	private double DEFAULT_STRAIGHT_BAND = 0.1;
 	private double STRAIGHT_BAND;
 	private double DOWNSHIFT_DEADBAND = 0.25;
-	private double UPSHIFT_DEADBAND = 0.8;
+	private double UPSHIFT_DEADBAND = 0.95;
 	
 	private static int kShiftUpButton = 7;
 	private static int kShiftDownButton = 8;
@@ -35,8 +35,9 @@ public class EnhancedDriverStation {
 	private Driver defaultDriver = new Driver(DEFAULT_STRAIGHT_BAND);
 	private Driver torey 	= new Driver(0.1);
 	private Driver parker 	= new Driver(0.2);
-	private Driver athena 	= new Driver(0.15);
-	private Driver currentDriver = parker; // set driver here
+	private Driver athena 	= new Driver(0.2);
+	private Driver tyler	= new Driver(0.05);
+	private Driver currentDriver = tyler; // set driver here
 	
 	/*
 	 * Operator Controls: 8 buttons

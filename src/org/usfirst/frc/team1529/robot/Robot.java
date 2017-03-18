@@ -121,7 +121,6 @@ public class Robot extends IterativeRobot {
 		// TODO: need to implement chooser with drive.
 		
 		auto_step = 1;
-		gearArm.closeFlap();
 		
 		tankDrive.resetEncoders();
 		Logger.log("-----------------Auto Init---------------");
@@ -134,35 +133,82 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Logger.log("Auto Periodic");
-		clearBaseline();
+//		gearArm.flapClose();
+		gearArm.flapOff();
+		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
+		Logger.log(msg);
+		Logger.log("Something a);sdlkfja;ksldjf");
+//		clearBaseline();
+//		autoLeftPeg();
+//		autoRightPeg();
+		validateRotation();
+//		validateBackward();
 		
 	}
 	
+	/**
+	 * Clears the baseline or gear on center peg.
+	 */
 	private void clearBaseline() {
 		Logger.log("Clearing baseline");
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(750); break;
+		case 1: goToBaseline(); break;
 		}
 	}
 	
+	private void validateBackward() {
+		Logger.log("Clearing baseline");
+		switch(auto_step) {
+		case 1: tankDrive.autoMoveTo(-750); break;
+		}
+	}
+	
+	private void validateRotation() {
+		Logger.log("Validating rotation");
+		switch(auto_step) {
+		case 1: tankDrive.autoMoveTo(200, -200); break;
+		}
+	}
+	
+	private void goToBaseline() { autoMoveTo(750); }
+	private void rotateForSide(boolean isClockwise) {
+		int direction;
+		if(isClockwise) {
+			direction = 1;
+		} else {
+			direction = -1;
+		}
+		rotate(direction * 200);
+	}
+	
+	private void autoLeftPeg() {
+		Logger.log("Left Peg Auto");
+		autoLeftRightPeg(true);
+	}
+	
+	private void autoRightPeg() {
+		Logger.log("Right Peg Auto");
+		autoLeftRightPeg(false);
+	}
+	
+	private void autoLeftRightPeg(boolean isLeft) {
+		switch(auto_step) {
+		case 1: autoMoveTo(200); break;
+		case 2: rotateForSide(isLeft); break;
+		case 3: autoMoveTo(200); break;
+		}
+	}
+	
+	private void autoMoveTo(int steps) { tankDrive.autoMoveTo(steps); }
 	
 	/**
-	 * NOT TESTED OR USED YET.
+	 * Auto rotate robot. Positive integer is clockwise orientation.
+	 * 
+	 * @param amount: 100 is about 30 degrees
 	 */
-//	private void firstGearOnPeg() {
-//		Logger.log("Placing gear");
-////		int inches_to_peg_from_wall = 9*12 + 10; // 9 ft 10 inches; // NOT TESTED OR USED
-//		switch(auto_step) {
-//		case 1: tankDrive.autoMoveTo(0); break;
-//		}
-//	}
-
-	
-	//TODO: Unreliable; needs testing.
-//	private int encoder_distance_to_location_from_wall(int inches) {
-//		return (inches - length_of_robot_inches) * encoder_count_per_inch;
-//	}
+	private void rotate(int amount) {
+		tankDrive.autoMoveTo(amount, -amount);
+	}
 
 	
 	@Override

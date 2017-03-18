@@ -43,8 +43,12 @@ public class DriveSystem {
 	 */
 	public void setSpeed(double speed) {
 		speed = direction * speed;
+		Logger.log(String.format("Setting speed to: %f", speed));
 		victor1.setSpeed(speed);
 		victor2.setSpeed(speed);
 		victor3.setSpeed(speed);
+		Logger.log(String.format("Victor1 speed set to: %f", victor1.getSpeed()));
+		Logger.log(String.format("Victor2 speed set to: %f", victor2.getSpeed()));
+		Logger.log(String.format("Victor3 speed set to: %f", victor3.getSpeed()));
 	}
 }
