@@ -35,10 +35,14 @@ public class TankDriveSystem {
 	 */
 	
 	public TankDriveSystem(Robot theRobot, int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
+		this(theRobot, new boolean[] {false, false}, leftPorts, rightPorts, driveSolenoid, climbSolenoid);
+	}
+	
+	public TankDriveSystem(Robot theRobot, boolean[] motorDirection, int[] leftPorts, int[] rightPorts, int[] driveSolenoid, int[] climbSolenoid) {
 		robot = theRobot;
 		
-		leftDrive 	= new DriveSystem(false, leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4], LEFT_ENCODER_REVERSE_DIRECTION);
-		rightDrive 	= new DriveSystem(false, rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
+		leftDrive 	= new DriveSystem(motorDirection[0], leftPorts[0], leftPorts[1], leftPorts[2], leftPorts[3], leftPorts[4], LEFT_ENCODER_REVERSE_DIRECTION);
+		rightDrive 	= new DriveSystem(motorDirection[1], rightPorts[0], rightPorts[1], rightPorts[2], rightPorts[3], rightPorts[4], RIGHT_ENCODER_REVERSE_DIRECTION);
 		driveShifter = new DoubleSolenoid(driveSolenoid[0], driveSolenoid[1], driveSolenoid[2]);
 		driveShifter.set(SHIFT_DN);
 		

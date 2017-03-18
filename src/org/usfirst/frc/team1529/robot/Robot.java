@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
  */
 public class Robot extends IterativeRobot {
+	private boolean isCompetition = false;
+	
 	// USB Ports
 	private int leftStickPort 	= 0;
 	private int rightStickPort 	= 1;
@@ -33,7 +35,11 @@ public class Robot extends IterativeRobot {
 	private int LEFT_B_DIO 	= 1;
 	private int RIGHT_A_DIO = 2;
 	private int RIGHT_B_DIO = 3;
-
+	
+	private boolean[] PRACTICE_BOT_MOTOR_DIRECTION 	= {false, true};
+	private boolean[] COMPETITION_BOT_MOTOR_DIRECTION = {false, false};
+	private boolean[] MOTOR_DIRECTION;
+	
 	private int[] leftDrivePorts   = {GRAY_PWM, PURPLE_PWM, GREEN_PWM, LEFT_A_DIO, LEFT_B_DIO};
 	private int[] rightDrivePorts  = {RED_PWM, ORANGE_PWM, YELLOW_PWM, RIGHT_A_DIO, RIGHT_B_DIO};
 
@@ -73,9 +79,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		if(isCompetition) {
+			MOTOR_DIRECTION = COMPETITION_BOT_MOTOR_DIRECTION;
+		} else {
+			MOTOR_DIRECTION = PRACTICE_BOT_MOTOR_DIRECTION;
+		}
+		
 		Logger.log("Initializing the robot...");
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
-		tankDrive 	= new TankDriveSystem(this, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
+		tankDrive 	= new TankDriveSystem(this, MOTOR_DIRECTION, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		setupHDCamera(1920, 1080, 10);
 	}
