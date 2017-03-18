@@ -101,7 +101,9 @@ public class EnhancedDriverStation {
 	 * 
 	 * @return true when the correct controls are pressed to shift to climbing
 	 */
-	public boolean shiftToClimber() { return leftStick.getRawButton(2) && leftStick.getRawButton(2); }
+	public boolean shiftToClimber() { return leftStick.getRawButton(2) && rightStick.getRawButton(2); }
+	
+	public boolean shiftToDrive() { return leftStick.getRawButton(1) && rightStick.getRawButton(1); }
 	
 	public boolean isDownShiftBand() { return rightAbs() <= DOWNSHIFT_DEADBAND || leftAbs() <= DOWNSHIFT_DEADBAND; }
 	

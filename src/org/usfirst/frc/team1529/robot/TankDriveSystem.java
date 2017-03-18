@@ -23,6 +23,8 @@ public class TankDriveSystem {
 //	private DoubleSolenoid.Value OFF 		= DoubleSolenoid.Value.kOff; // NOT USED
 	private DoubleSolenoid.Value SHIFT_UP 	= FORWARD;
 	private DoubleSolenoid.Value SHIFT_DN 	= REVERSE;
+	private DoubleSolenoid.Value TOCLIMB	= FORWARD;
+	private DoubleSolenoid.Value TODRIVE	= REVERSE;
 	
 	private boolean LEFT_ENCODER_REVERSE_DIRECTION = false;
 	private boolean RIGHT_ENCODER_REVERSE_DIRECTION = true;
@@ -47,7 +49,7 @@ public class TankDriveSystem {
 		driveShifter.set(SHIFT_DN);
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
-		climbShifter.set(REVERSE);
+		climbShifter.set(TODRIVE);
 
 	}
 	
@@ -106,13 +108,18 @@ public class TankDriveSystem {
 	}
 	
 	/**
-	 * shiftToClimb: shifts the pneumatic solenoid out such that it shifts the drive motors to the climb system.
+	 * Shifts from drive train to climb train.
 	 * 
 	 */
 	public void shiftToClimb() {
 		Logger.log("Shifted to climb!");
-		climbShifter.set(FORWARD);
+		climbShifter.set(TOCLIMB);
 	}
+	
+	/**
+	 * Shifts out of climb to drive train.
+	 */
+	public void shiftToDrive() { climbShifter.set(TODRIVE); }
 	
 	/**
 	 * Set motor speeds to climb. Forces motors to turn in only one direction.
@@ -126,11 +133,25 @@ public class TankDriveSystem {
 		rightDrive.setSpeed(speed);
 	}
 	
+	/**
+	 * Sets the climb speed based on driver station input.
+	 * @param station
+	 * @return
+	 */
 	private double climbSpeed(EnhancedDriverStation station) {
-		double left = station.leftAbs();
-		double right = station.rightAbs();
-		return (left + right) / 2.0;
+		double direction = -1.0;
+		double left = station.leftStickValue();
+		double right = station.rightStickValue();
+		return direction * average(left, right);
 	}
+	
+	/**
+	 * Average of two numbers.
+	 * @param num1
+	 * @param num2
+	 * @return
+	 */
+	private double average(double num1, double num2) { return (num1 + num2) / 2.0; }
 	
 	public void printEncoders() {
 		Logger.log(String.format("Left Count: %d; Right Count: %d", leftDrive.encoder.get(), rightDrive.encoder.get()));
@@ -142,9 +163,7 @@ public class TankDriveSystem {
 		rightDrive.encoder.reset();
 	}
 	
-	public void autoMoveTo(int encoder_counts) {
-		autoMoveTo(encoder_counts, encoder_counts);
-	}
+	public void autoMoveTo(int encoder_counts) { autoMoveTo(encoder_counts, encoder_counts); }
 	
 	public void autoMoveTo(int leftTarget, int rightTarget) {
 		Logger.log("******auto move to******");

@@ -178,7 +178,7 @@ public class Robot extends IterativeRobot {
 			shiftToClimb();
 		} else {
 			teleopClimb();
-//			shiftToDrive();
+			shiftToDrive();
 		}
 	}
 	
@@ -192,6 +192,13 @@ public class Robot extends IterativeRobot {
 				Logger.log("Shifting to Climb");
 			tankDrive.shiftToClimb();
 			drive_mode = false;
+		}
+	}
+	
+	private void shiftToDrive() {
+		if(!drive_mode && station.shiftToDrive()) {
+			tankDrive.shiftToDrive();
+			drive_mode = true;
 		}
 	}
 
