@@ -89,7 +89,7 @@ public class Robot extends IterativeRobot {
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, MOTOR_DIRECTION, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
-		setupHDCamera(1920, 1080, 10);
+//		setupHDCamera(1920, 1080, 10);
 	}
 	
 	/**
@@ -178,7 +178,7 @@ public class Robot extends IterativeRobot {
 			shiftToClimb();
 		} else {
 			teleopClimb();
-			//TODO: shiftToDrive;
+//			shiftToDrive();
 		}
 	}
 	
@@ -194,6 +194,7 @@ public class Robot extends IterativeRobot {
 			drive_mode = false;
 		}
 	}
+
 	
 	/**
 	 * Do the things that should be done when in Teleop and in drive mode.

@@ -24,8 +24,8 @@ public class GearArm {
 	
 	// Intake System **********************************
 	DoubleSolenoid flap; // Pneumatic Flap
-	private DoubleSolenoid.Value OPEN 	= DoubleSolenoid.Value.kForward;
-	private DoubleSolenoid.Value CLOSE 	= DoubleSolenoid.Value.kReverse;
+	private DoubleSolenoid.Value CLOSE 	= DoubleSolenoid.Value.kForward;
+	private DoubleSolenoid.Value OPEN 	= DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value OFF	= DoubleSolenoid.Value.kOff;
 	VictorSP intake;// Intake Motor Victor
 	boolean isIntake;
@@ -80,24 +80,23 @@ public class GearArm {
 	}
 	
 	private void controlIntake(EnhancedDriverStation station) {
-		if(station.isIntake())
+		if(station.isIntake()) {
 			intakeOn();
-		else if(station.isOuttake())
+		} else if(station.isOuttake()) {
 			outtakeOn();
-		else
+		} else {
 			intakeOff();
+		}
 	}
 	
 	private void controlFlap(EnhancedDriverStation station) {
-		if(station.flapOpen())
+		if(station.flapOpen()) {
 			openFlap();
-		else
-			flapOff();
-		
-		if(station.flapClose())
+		} else if(station.flapClose()) {
 			closeFlap();
-		else
+		} else {
 			flapOff();
+		}
 	}
 	
 	private void flapOff() {
