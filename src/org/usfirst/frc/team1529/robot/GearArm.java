@@ -61,17 +61,17 @@ public class GearArm {
 	}
 	
 	private void controlArmSystem(EnhancedDriverStation station) {
-		double arm_speed = 0.1;
+		double direction 	= 1.0;
+		double upSpeed 		= direction * 0.2;
+		double downSpeed 	= -direction * 0.2;
 		Logger.log("TRYING TO SET ARM");
 		if(station.armUp()) {
-			pivot.set(1.0);
-		} else
+			pivot.set(upSpeed);
+		} else if(station.armDown()) {
+			pivot.set(downSpeed);
+		} else {
 			stop();
-		
-		if(station.armDown()) {
-			pivot.set(-arm_speed);
-		} else
-			stop();
+		}
 	}
 	
 	private void controlIntakeSystem(EnhancedDriverStation station) {

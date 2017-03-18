@@ -176,8 +176,10 @@ public class Robot extends IterativeRobot {
 		if (drive_mode) { // can only shift to climb mode, cannot shift back at this time.
 			teleopDrive(); // Can either do driving/setting gears
 			shiftToClimb();
-		} else
-			teleopClimb(); // Or climb
+		} else {
+			teleopClimb();
+			//TODO: shiftToDrive;
+		}
 	}
 	
 	
