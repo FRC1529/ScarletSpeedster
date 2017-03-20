@@ -166,7 +166,7 @@ public class Robot extends IterativeRobot {
 	private void validateRotation() {
 		Logger.log("Validating rotation");
 		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(200, -200); break;
+		case 1: tankDrive.autoMoveTo(100, -100); break;
 		}
 	}
 	

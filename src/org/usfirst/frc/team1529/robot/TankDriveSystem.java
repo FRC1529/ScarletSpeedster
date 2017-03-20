@@ -246,7 +246,13 @@ public class TankDriveSystem {
 		} else {
 			max_speed = 0.35;
 		}
-		double min_speed = 0.1;
+		
+		double min_speed;
+		if(Math.abs(error) > 100) {
+			min_speed = 0.3;
+		} else {
+			min_speed = 0.15;
+		}
 		
 		int error_tolerance = 25;
 		
@@ -286,6 +292,9 @@ public class TankDriveSystem {
 		double slope = (minSpeed - maxSpeed) / (t - maxErr);
 		double intercept = minSpeed - slope * t;
 		double speed = line(slope, intercept, Math.abs((double) error));
+		
+		String msg = String.format("Slope: %f\nIntercept: %f\n Speed: %f", slope, intercept, speed);
+		Logger.log(msg);
 		if(error < 0) { speed = -speed; }
 		return speed;
 	}
