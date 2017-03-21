@@ -3,6 +3,8 @@ package org.usfirst.frc.team1529.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Team Name: 1529 CyberCards
@@ -63,6 +65,7 @@ public class Robot extends IterativeRobot {
 	TankDriveSystem tankDrive;
 	GearArm gearArm; 	// Gear Arm
 	UsbCamera camera; 	// Vision Camera setup
+	SendableChooser autoChooser;
 
 	boolean drive_mode     = true; 	// If false, in climb mode
 	int auto_mode_position = 0; 	// details in autoInit()
@@ -89,7 +92,23 @@ public class Robot extends IterativeRobot {
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, MOTOR_DIRECTION, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
-//		setupHDCamera(1920, 1080, 10);
+		
+		setupAutoChooser();
+		setupHDCamera(800, 600, 20);
+	}
+	
+	private void setupChoosers() {
+		setupAutoChooser();
+//		setupDriverChooser(); // TODO: select driver
+//		setupRobotChooser();  // Competition or practice bot.
+	}
+	
+	private void setupAutoChooser() {
+		autoChooser = new SendableChooser();
+		autoChooser.addDefault("Clear Baseline", "baseline");
+		autoChooser.addObject("Left of Airship", "left");
+		autoChooser.addObject("Right of Airship", "right");
+		SmartDashboard.putData("Autonomous:", autoChooser);
 	}
 	
 	/**
@@ -100,25 +119,21 @@ public class Robot extends IterativeRobot {
 	 */
 	private void setupHDCamera(int xRes, int yRes, int frameRate) {
 		Logger.log("Setting up HD Camera");
-		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera = CameraServer.getInstance().startAutomaticCapture(0);
 		camera.setResolution(xRes, yRes);
 		camera.setFPS(frameRate);
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional comparisons to the
-	 * switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
-	 */
+
 	@Override
 	public void autonomousInit() {
 		// TODO: need to implement chooser with drive.
+		String choice = autoChooser.getSelected().toString();
+		String msg = String.format("AutoChoice: %s", choice);
+		Logger.log(msg);
+		
+		
+		
 		
 		auto_step = 1;
 		
@@ -133,17 +148,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		// TODO: need to implement chooser with drive.
+		String choice = autoChooser.getSelected().toString();
+		String msg2 = String.format("AutoChoice: %s", choice);
+		Logger.log(msg2);
+		
 //		gearArm.flapClose();
 		gearArm.flapOff();
 		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
 		Logger.log(msg);
 		Logger.log("Something a);sdlkfja;ksldjf");
-//		clearBaseline();
-//		autoLeftPeg();
-//		autoRightPeg();
-		validateRotation();
-//		validateBackward();
 		
+		switch(choice) {
+		case "baseline": clearBaseline(); break;
+		case "left": autoLeftPeg(); break;
+		case "right": autoRightPeg(); break;
+		}
 	}
 	
 	/**
@@ -171,6 +191,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void goToBaseline() { autoMoveTo(750); }
+	
 	private void rotateForSide(boolean isClockwise) {
 		int direction;
 		if(isClockwise) {
