@@ -213,9 +213,18 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void autoLeftRightPeg(boolean isLeft) {
+		int outer = 1175;
+		int inner = 950;
+		int left, right;
+		if(isLeft) {
+			left = outer;
+			right = inner;
+		} else {
+			left = inner;
+			right = outer;
+		}
 		switch(auto_step) {
-		case 1: autoMoveTo(1000, 750); break;
-//		case 2: autoMoveTo(200, 100); break;
+		case 1: autoMoveTo(left, right); break;
 		}
 	}
 	
