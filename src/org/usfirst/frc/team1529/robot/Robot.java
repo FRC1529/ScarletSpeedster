@@ -94,7 +94,7 @@ public class Robot extends IterativeRobot {
 		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		
 		setupAutoChooser();
-		setupHDCamera(800, 600, 20);
+		setupHDCamera(96, 54, 60);
 	}
 	
 	private void setupChoosers() {
