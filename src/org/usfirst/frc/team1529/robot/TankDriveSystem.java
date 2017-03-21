@@ -238,13 +238,13 @@ public class TankDriveSystem {
 		Logger.log("Advanced Encoder Setting");
 		int error = target - drive.encoder.get();
 		double direction = -1.0;
-		int max_error = 700;
+		int max_error = 1000;
 		
 		double max_speed;
 		if(error > max_error) {
 			max_speed = 0.5;
 		} else {
-			max_speed = 0.35;
+			max_speed = 0.25;
 		}
 		
 		double min_speed;
@@ -254,7 +254,7 @@ public class TankDriveSystem {
 			min_speed = 0.15;
 		}
 		
-		int error_tolerance = 25;
+		int error_tolerance = 50;
 		
 		double speed;
 		

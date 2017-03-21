@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
 	TankDriveSystem tankDrive;
 	GearArm gearArm; 	// Gear Arm
 	UsbCamera camera; 	// Vision Camera setup
-	SendableChooser autoChooser;
+	SendableChooser<String> autoChooser;
 
 	boolean drive_mode     = true; 	// If false, in climb mode
 	int auto_mode_position = 0; 	// details in autoInit()
@@ -104,7 +104,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void setupAutoChooser() {
-		autoChooser = new SendableChooser();
+		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Clear Baseline", "baseline");
 		autoChooser.addObject("Left of Airship", "left");
 		autoChooser.addObject("Right of Airship", "right");
@@ -214,13 +214,13 @@ public class Robot extends IterativeRobot {
 	
 	private void autoLeftRightPeg(boolean isLeft) {
 		switch(auto_step) {
-		case 1: autoMoveTo(200); break;
-		case 2: rotateForSide(isLeft); break;
-		case 3: autoMoveTo(200); break;
+		case 1: autoMoveTo(1000, 750); break;
+//		case 2: autoMoveTo(200, 100); break;
 		}
 	}
 	
 	private void autoMoveTo(int steps) { tankDrive.autoMoveTo(steps); }
+	private void autoMoveTo(int leftSteps, int rightSteps) { tankDrive.autoMoveTo(leftSteps, rightSteps); }
 	
 	/**
 	 * Auto rotate robot. Positive integer is clockwise orientation.
