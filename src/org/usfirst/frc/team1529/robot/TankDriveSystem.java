@@ -31,6 +31,8 @@ public class TankDriveSystem {
 	private int ENCODER_BAND = 3;
 	
 	private Robot robot;
+	private int testStep;
+	private boolean isTesting;
 	
 	/*
 	 * TankDriveSystem constructor
@@ -50,7 +52,7 @@ public class TankDriveSystem {
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
 		climbShifter.set(TODRIVE);
-
+		resetTestingVariables();
 	}
 	
 	/***************************
@@ -64,6 +66,27 @@ public class TankDriveSystem {
 		setSpeed(station);
 		checkShifters(station);
 		printEncoders();
+		testDriveSystems(station);
+	}
+	
+	private void testDriveSystems(EnhancedDriverStation station) {
+		if(station.isRunTest()) {
+			if(!isTesting) {
+				isTesting = true;
+			}
+			runDriveSystemTest(station);
+		} else if(isTesting) {
+			resetTestingVariables();
+		}
+	}
+	
+	private void resetTestingVariables() {
+		testStep = 0;
+		isTesting = false;
+	}
+	
+	private void runDriveSystemTest(EnhancedDriverStation station) {
+		
 	}
 	
 	private void setSpeed(EnhancedDriverStation station) {

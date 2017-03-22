@@ -37,7 +37,7 @@ public class EnhancedDriverStation {
 	private Driver parker 	= new Driver(0.2);
 	private Driver athena 	= new Driver(0.2);
 	private Driver tyler	= new Driver(0.05);
-	private Driver currentDriver = torey; // set driver here
+	private Driver currentDriver = parker; // set driver here
 	
 	/*
 	 * Operator Controls: 8 buttons
@@ -171,6 +171,14 @@ public class EnhancedDriverStation {
 	
 	public boolean flapClose() {
 		return operator.getRawButton(FLAP_CLOSE);
+	}
+	
+	public boolean isRunTest() {
+		return getRaw(5) && getRaw(6) && getRaw(7) && getRaw(8) && getRaw(9) && getRaw(10);
+	}
+	
+	private boolean getRaw(int port) {
+		return operator.getRawButton(port);
 	}
 	
 //	public boolean flapOff() {
