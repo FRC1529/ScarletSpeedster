@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
  */
 public class Robot extends IterativeRobot {
-	private boolean isCompetition = false;
+	private boolean isCompetition = true;
 	
 	// USB Ports
 	private int leftStickPort 	= 0;
