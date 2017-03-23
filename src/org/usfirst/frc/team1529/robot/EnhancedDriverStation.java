@@ -37,7 +37,7 @@ public class EnhancedDriverStation {
 	private Driver parker 	= new Driver(0.2);
 	private Driver athena 	= new Driver(0.2);
 	private Driver tyler	= new Driver(0.05);
-	private Driver currentDriver = parker; // set driver here
+	private Driver currentDriver = tyler; // set driver here
 	
 	/*
 	 * Operator Controls: 8 buttons
