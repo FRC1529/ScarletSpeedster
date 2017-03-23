@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1529.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class TankDriveSystem {
 	/*
@@ -32,7 +33,9 @@ public class TankDriveSystem {
 	
 	private Robot robot;
 	private int testStep;
+	private long testTime;
 	private boolean isTesting;
+	private long TEST_LENGTH = 150; // 3 seconds divided by 0.02 seconds per iteration
 	
 	/*
 	 * TankDriveSystem constructor
@@ -52,7 +55,7 @@ public class TankDriveSystem {
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
 		climbShifter.set(TODRIVE);
-		resetTestingVariables();
+//		resetTestingVariables();
 	}
 	
 	/***************************
@@ -66,7 +69,7 @@ public class TankDriveSystem {
 		setSpeed(station);
 		checkShifters(station);
 		printEncoders();
-		testDriveSystems(station);
+//		testDriveSystems(station);
 	}
 	
 	private void testDriveSystems(EnhancedDriverStation station) {
@@ -83,10 +86,27 @@ public class TankDriveSystem {
 	private void resetTestingVariables() {
 		testStep = 0;
 		isTesting = false;
+		testTime = 0;
 	}
 	
 	private void runDriveSystemTest(EnhancedDriverStation station) {
+		Logger.log("Running Drive Test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		switch(testStep) {
+		case 0: testStep++; break;
+		case 1: testMotor(leftDrive.victor1); break;
+		}
+	}
+	
+	private void testMotor(VictorSP motor) {
+		if(testTime == 0) {
+			motor.setSpeed(1.0);
+		} else if(testTime >= TEST_LENGTH) {
+			motor.setSpeed(0.0);
+			testStep++;
+			return;
+		}
 		
+		testTime++;
 	}
 	
 	private void setSpeed(EnhancedDriverStation station) {
