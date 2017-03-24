@@ -76,7 +76,7 @@ public class Robot extends IterativeRobot {
 	int auto_mode_position = 0; 	// details in autoInit()
 	int auto_mode_setting  = 0; 	// details in autoCenter()
 	int auto_step;
-	int auto_dummy_counter = 0;
+	int auto_dummy_counter;
 //	private int encoder_count_per_inch = 440 / 24; // UNTESTED; NOT USED
 //	private int length_of_robot_inches = 3 * 12; // UNTESTED; NOT USED
 	
@@ -139,6 +139,7 @@ public class Robot extends IterativeRobot {
 		Logger.log(msg);
 		
 		auto_step = 1;
+		auto_dummy_counter = 0;
 		
 		tankDrive.resetEncoders();
 		Logger.log("-----------------Auto Init---------------");
@@ -166,7 +167,7 @@ public class Robot extends IterativeRobot {
 		case "baseline": clearBaseline(); break;
 		case "left": autoLeftPeg(); break;
 		case "right": autoRightPeg(); break;
-		case "dummey": autoDummy(); break;
+		case "dummy": autoDummy(); break;
 		}
 	}
 	
@@ -181,11 +182,22 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void autoDummy(){
-		while(auto_dummy_counter < 350){
-			tankDrive.leftDrive.setSpeed(0.2);
-			tankDrive.rightDrive.setSpeed(0.2);
-			auto_dummy_counter++;
+		int stopper = 100;
+		Logger.log("Trying to Run Dummy");
+		String msg = String.format("Dummy Counter: %d", auto_dummy_counter);
+		Logger.log(msg);
+		if(auto_dummy_counter < stopper){
+			Logger.log("Dummy Auto Periodic");
+			
+			tankDrive.leftDrive.setSpeed(-0.3);
+			tankDrive.rightDrive.setSpeed(-0.3);
+			
+		} else if(auto_dummy_counter > stopper) {
+			tankDrive.leftDrive.setSpeed(0.0);
+			tankDrive.rightDrive.setSpeed(0.0);
 		}
+		
+		auto_dummy_counter++;
 	}
 //	private void validateBackward() {
 //		Logger.log("Clearing baseline");
