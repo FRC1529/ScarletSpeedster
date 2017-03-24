@@ -51,11 +51,16 @@ public class Robot extends IterativeRobot {
 	private int gearArmTalonCANID 	= 0;
 	
 	// PCM Ports
-	private int flap_out 	= 2;
-	private int flap_in 	= 3;
+	/*Practice bot setup**********
+	 * 0/1 => drive solenoid
+	 * 2/3 => flap
+	 * 4/5 => climb solenoid
+	 */
+	private int flap_out 	= 4;
+	private int flap_in 	= 5;
 	private int intakeMotor = WHITE_PWM;
 	private int[] DRIVE_SOLENOID = {PCM_CANID, 0, 1};
-	private int[] CLIMB_SOLENOID = {PCM_CANID, 4, 5};
+	private int[] CLIMB_SOLENOID = {PCM_CANID, 2, 3};
 	
 	//I2C device addresses
 //		private int pixycam1_address = 0x54;
