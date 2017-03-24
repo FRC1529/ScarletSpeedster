@@ -181,19 +181,19 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	private void validateBackward() {
-		Logger.log("Clearing baseline");
-		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(-750); break;
-		}
-	}
+//	private void validateBackward() {
+//		Logger.log("Clearing baseline");
+//		switch(auto_step) {
+//		case 1: tankDrive.autoMoveTo(-750); break;
+//		}
+//	}
 	
-	private void validateRotation() {
-		Logger.log("Validating rotation");
-		switch(auto_step) {
-		case 1: tankDrive.autoMoveTo(100, -100); break;
-		}
-	}
+//	private void validateRotation() {
+//		Logger.log("Validating rotation");
+//		switch(auto_step) {
+//		case 1: tankDrive.autoMoveTo(100, -100); break;
+//		}
+//	}
 	
 	private void goToBaseline() { autoMoveTo(750, 775); }
 	
@@ -231,6 +231,7 @@ public class Robot extends IterativeRobot {
 		}
 		switch(auto_step) {
 		case 1: autoMoveTo(left, right); break;
+		case 2: autoMoveTo(300); break;
 		}
 	}
 	
