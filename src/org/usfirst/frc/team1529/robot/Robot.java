@@ -132,13 +132,9 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		// TODO: need to implement chooser with drive.
 		String choice = autoChooser.getSelected().toString();
 		String msg = String.format("AutoChoice: %s", choice);
 		Logger.log(msg);
-		
-		
-		
 		
 		auto_step = 1;
 		
@@ -209,31 +205,42 @@ public class Robot extends IterativeRobot {
 //	}
 	
 	private void autoLeftPeg() {
+		int left = 1300;
+		int right = 1000;
 		Logger.log("Left Peg Auto");
-		autoLeftRightPeg(true);
+		switch(auto_step) {
+		case 1: autoMoveTo(left, right); break;
+		case 2: autoMoveTo(300, 350); break;
+		}
 	}
 	
 	private void autoRightPeg() {
+		int left = 950;
+		int right = 1175;
 		Logger.log("Right Peg Auto");
-		autoLeftRightPeg(false);
-	}
-	
-	private void autoLeftRightPeg(boolean isLeft) {
-		int outer = 1175;
-		int inner = 950;
-		int left, right;
-		if(isLeft) {
-			left = outer;
-			right = inner;
-		} else {
-			left = inner;
-			right = outer;
-		}
 		switch(auto_step) {
 		case 1: autoMoveTo(left, right); break;
-		case 2: autoMoveTo(300); break;
+		case 2: autoMoveTo(300, 350); break;
 		}
 	}
+	
+//	Not used because not symmetrical.
+//	private void autoLeftRightPeg(boolean isLeft) {
+//		int outer = 1175;
+//		int inner = 950;
+//		int left, right;
+//		if(isLeft) {
+//			left = outer;
+//			right = inner;
+//		} else {
+//			left = inner;
+//			right = outer;
+//		}
+//		switch(auto_step) {
+//		case 1: autoMoveTo(left, right); break;
+//		case 2: autoMoveTo(300); break;
+//		}
+//	}
 	
 	private void autoMoveTo(int steps) { tankDrive.autoMoveTo(steps); }
 	private void autoMoveTo(int leftSteps, int rightSteps) { tankDrive.autoMoveTo(leftSteps, rightSteps); }
