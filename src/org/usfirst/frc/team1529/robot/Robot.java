@@ -195,17 +195,18 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	private void goToBaseline() { autoMoveTo(750); }
+	private void goToBaseline() { autoMoveTo(750, 775); }
 	
-	private void rotateForSide(boolean isClockwise) {
-		int direction;
-		if(isClockwise) {
-			direction = 1;
-		} else {
-			direction = -1;
-		}
-		rotate(direction * 200);
-	}
+//	TODO: NOT USED******
+//	private void rotateForSide(boolean isClockwise) {
+//		int direction;
+//		if(isClockwise) {
+//			direction = 1;
+//		} else {
+//			direction = -1;
+//		}
+//		rotate(direction * 200);
+//	}
 	
 	private void autoLeftPeg() {
 		Logger.log("Left Peg Auto");

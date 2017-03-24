@@ -62,7 +62,7 @@ public class GearArm {
 	
 	private void controlArmSystem(EnhancedDriverStation station) {
 		double direction 	= 1.0;
-		double upSpeed 		= direction * 0.3;
+		double upSpeed 		= direction * 0.35;
 		double downSpeed 	= -direction * 0.2;
 		Logger.log("TRYING TO SET ARM");
 		if(station.armUp()) {
