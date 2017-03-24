@@ -76,6 +76,7 @@ public class Robot extends IterativeRobot {
 	int auto_mode_position = 0; 	// details in autoInit()
 	int auto_mode_setting  = 0; 	// details in autoCenter()
 	int auto_step;
+	int auto_dummy_counter = 0;
 //	private int encoder_count_per_inch = 440 / 24; // UNTESTED; NOT USED
 //	private int length_of_robot_inches = 3 * 12; // UNTESTED; NOT USED
 	
@@ -113,6 +114,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Clear Baseline", "baseline");
 		autoChooser.addObject("Left of Airship", "left");
 		autoChooser.addObject("Right of Airship", "right");
+		autoChooser.addObject("Dummy Straight", "dummy");
 		SmartDashboard.putData("Autonomous:", autoChooser);
 	}
 	
@@ -164,6 +166,7 @@ public class Robot extends IterativeRobot {
 		case "baseline": clearBaseline(); break;
 		case "left": autoLeftPeg(); break;
 		case "right": autoRightPeg(); break;
+		case "dummey": autoDummy(); break;
 		}
 	}
 	
@@ -177,6 +180,13 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
+	private void autoDummy(){
+		while(auto_dummy_counter < 350){
+			tankDrive.leftDrive.setSpeed(0.2);
+			tankDrive.rightDrive.setSpeed(0.2);
+			auto_dummy_counter++;
+		}
+	}
 //	private void validateBackward() {
 //		Logger.log("Clearing baseline");
 //		switch(auto_step) {
