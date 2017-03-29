@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.VictorSP;
  *
  */
 public class DriveSystem {
-	//Victors
 	VictorSP victor1, victor2, victor3;
 	private double direction;
 	Encoder encoder;

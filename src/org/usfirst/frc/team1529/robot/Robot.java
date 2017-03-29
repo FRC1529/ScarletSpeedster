@@ -61,9 +61,6 @@ public class Robot extends IterativeRobot {
 	private int intakeMotor = WHITE_PWM;
 	private int[] DRIVE_SOLENOID = {PCM_CANID, 0, 1};
 	private int[] CLIMB_SOLENOID = {PCM_CANID, 2, 3};
-	
-	//I2C device addresses
-//		private int pixycam1_address = 0x54;
 		
 	EnhancedDriverStation station;
 	
@@ -78,8 +75,6 @@ public class Robot extends IterativeRobot {
 	int auto_step;
 	int auto_dummy_counter;
 	String auto_choice;
-//	private int encoder_count_per_inch = 440 / 24; // UNTESTED; NOT USED
-//	private int length_of_robot_inches = 3 * 12; // UNTESTED; NOT USED
 	
 	
 	// NOTE: Climber system is built into Tank Drive.

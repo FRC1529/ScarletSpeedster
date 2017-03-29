@@ -11,13 +11,8 @@ import edu.wpi.first.wpilibj.Joystick;
  *
  */
 public class EnhancedDriverStation {
-	// Instance Variables
-	// DriverStation
 	DriverStation driverStation = DriverStation.getInstance();
 
-	/*
-	 * Driver Controls
-	 */
 	Joystick leftStick;
 	Joystick rightStick;
 	Joystick operator;

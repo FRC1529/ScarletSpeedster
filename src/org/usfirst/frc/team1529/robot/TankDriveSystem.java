@@ -32,10 +32,6 @@ public class TankDriveSystem {
 	private int ENCODER_BAND = 3;
 	
 	private Robot robot;
-	private int testStep;
-	private long testTime;
-	private boolean isTesting;
-	private long TEST_LENGTH = 150; // 3 seconds divided by 0.02 seconds per iteration
 	
 	/*
 	 * TankDriveSystem constructor
@@ -72,42 +68,42 @@ public class TankDriveSystem {
 //		testDriveSystems(station);
 	}
 	
-	private void testDriveSystems(EnhancedDriverStation station) {
-		if(station.isRunTest()) {
-			if(!isTesting) {
-				isTesting = true;
-			}
-			runDriveSystemTest(station);
-		} else if(isTesting) {
-			resetTestingVariables();
-		}
-	}
+//	private void testDriveSystems(EnhancedDriverStation station) {
+//		if(station.isRunTest()) {
+//			if(!isTesting) {
+//				isTesting = true;
+//			}
+//			runDriveSystemTest(station);
+//		} else if(isTesting) {
+//			resetTestingVariables();
+//		}
+//	}
 	
-	private void resetTestingVariables() {
-		testStep = 0;
-		isTesting = false;
-		testTime = 0;
-	}
+//	private void resetTestingVariables() {
+//		testStep = 0;
+//		isTesting = false;
+//		testTime = 0;
+//	}
 	
-	private void runDriveSystemTest(EnhancedDriverStation station) {
-		Logger.log("Running Drive Test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		switch(testStep) {
-		case 0: testStep++; break;
-		case 1: testMotor(leftDrive.victor1); break;
-		}
-	}
+//	private void runDriveSystemTest(EnhancedDriverStation station) {
+//		Logger.log("Running Drive Test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		switch(testStep) {
+//		case 0: testStep++; break;
+//		case 1: testMotor(leftDrive.victor1); break;
+//		}
+//	}
 	
-	private void testMotor(VictorSP motor) {
-		if(testTime == 0) {
-			motor.setSpeed(1.0);
-		} else if(testTime >= TEST_LENGTH) {
-			motor.setSpeed(0.0);
-			testStep++;
-			return;
-		}
-		
-		testTime++;
-	}
+//	private void testMotor(VictorSP motor) {
+//		if(testTime == 0) {
+//			motor.setSpeed(1.0);
+//		} else if(testTime >= TEST_LENGTH) {
+//			motor.setSpeed(0.0);
+//			testStep++;
+//			return;
+//		}
+//		
+//		testTime++;
+//	}
 	
 	private void setSpeed(EnhancedDriverStation station) {
 		leftDrive.setSpeed(station.leftStickValue());
