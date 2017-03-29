@@ -156,8 +156,8 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void runChoice() {
-		String msg2 = String.format("AutoChoice: %s", auto_choice);
-		Logger.log(msg2);
+		String msg = String.format("AutoChoice: %s", auto_choice);
+		Logger.log(msg);
 		switch(auto_choice) {
 		case "baseline": clearBaseline(); break;
 		case "left": autoLeftPeg(); break;

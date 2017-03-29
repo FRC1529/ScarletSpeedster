@@ -202,7 +202,18 @@ public class TankDriveSystem {
 		rightDrive.encoder.reset();
 	}
 	
-	public void autoMoveTo(int encoder_counts) { autoMoveTo(encoder_counts, encoder_counts); }
+	public void autoMoveTo(int encoder_counts) {
+//		autoMoveTo(encoder_counts, encoder_counts);
+		
+		// New code
+		Logger.log("THIS IS NEW");
+		String msg = String.format("Auto moving to same spot: %d", encoder_counts);
+		Logger.log(msg);
+		printEncoders();
+		
+		int avgEncoder = (leftDrive.encoder.get() + rightDrive.encoder.get()) / 2;
+		
+	}
 	
 	public void autoMoveTo(int leftTarget, int rightTarget) {
 		String msg = String.format("********* Auto Moving to: left: %d; right: %d", leftTarget, rightTarget);
