@@ -77,6 +77,7 @@ public class Robot extends IterativeRobot {
 	int auto_mode_setting  = 0; 	// details in autoCenter()
 	int auto_step;
 	int auto_dummy_counter;
+	String auto_choice;
 //	private int encoder_count_per_inch = 440 / 24; // UNTESTED; NOT USED
 //	private int length_of_robot_inches = 3 * 12; // UNTESTED; NOT USED
 	
@@ -97,7 +98,7 @@ public class Robot extends IterativeRobot {
 		Logger.log("Initializing the robot...");
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, MOTOR_DIRECTION, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
-		gearArm = new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
+		gearArm 	= new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		
 		setupAutoChooser();
 		setupHDCamera(96, 54, 60);
@@ -134,17 +135,17 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		String choice = autoChooser.getSelected().toString();
-		String msg = String.format("AutoChoice: %s", choice);
-		Logger.log(msg);
-		
-		auto_step = 1;
-		auto_dummy_counter = 0;
+		initializeAutoVariables();
 		
 		tankDrive.resetEncoders();
 		Logger.log("-----------------Auto Init---------------");
 		tankDrive.printEncoders();
-		Logger.log("CHECK HERE");
+	}
+	
+	private void initializeAutoVariables() {
+		auto_choice = autoChooser.getSelected().toString();
+		auto_step = 1;
+		auto_dummy_counter = 0;
 	}
 
 	/**
@@ -152,18 +153,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		// TODO: need to implement chooser with drive.
-		String choice = autoChooser.getSelected().toString();
-		String msg2 = String.format("AutoChoice: %s", choice);
-		Logger.log(msg2);
-		
-//		gearArm.flapClose();
 		gearArm.flapOff();
 		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
 		Logger.log(msg);
-		Logger.log("Something a);sdlkfja;ksldjf");
 		
-		switch(choice) {
+		runChoice();
+	}
+	
+	private void runChoice() {
+		String msg2 = String.format("AutoChoice: %s", auto_choice);
+		Logger.log(msg2);
+		switch(auto_choice) {
 		case "baseline": clearBaseline(); break;
 		case "left": autoLeftPeg(); break;
 		case "right": autoRightPeg(); break;
@@ -199,56 +199,19 @@ public class Robot extends IterativeRobot {
 		
 		auto_dummy_counter++;
 	}
-//	private void validateBackward() {
-//		Logger.log("Clearing baseline");
-//		switch(auto_step) {
-//		case 1: tankDrive.autoMoveTo(-750); break;
-//		}
-//	}
-	
-//	private void validateRotation() {
-//		Logger.log("Validating rotation");
-//		switch(auto_step) {
-//		case 1: tankDrive.autoMoveTo(100, -100); break;
-//		}
-//	}
 	
 	private void goToBaseline() { autoMoveTo(750, 775); }
 	
-//	TODO: NOT USED******
-//	private void rotateForSide(boolean isClockwise) {
-//		int direction;
-//		if(isClockwise) {
-//			direction = 1;
-//		} else {
-//			direction = -1;
-//		}
-//		rotate(direction * 200);
-//	}
-	
 	private void autoLeftPeg() {
-//		int left = 1300;
-//		int right = 1000;
 		Logger.log("Left Peg Auto");
-//		switch(auto_step) {
-//		case 1: autoMoveTo(left, right); break;
-//		case 2: autoMoveTo(300, 350); break;
-//		}
 		autoLeftRightPeg(true);
 	}
 	
 	private void autoRightPeg() {
-//		int left = 950;
-//		int right = 1175;
 		Logger.log("Right Peg Auto");
-//		switch(auto_step) {
-//		case 1: autoMoveTo(left, right); break;
-//		case 2: autoMoveTo(300, 350); break;
-//		}
 		autoLeftRightPeg(false);
 	}
 	
-//	Not used because not symmetrical.
 	private void autoLeftRightPeg(boolean isLeft) {
 		int outer = 1107;
 		int inner = 925;
@@ -268,16 +231,6 @@ public class Robot extends IterativeRobot {
 	
 	private void autoMoveTo(int steps) { tankDrive.autoMoveTo(steps); }
 	private void autoMoveTo(int leftSteps, int rightSteps) { tankDrive.autoMoveTo(leftSteps, rightSteps); }
-	
-	/**
-	 * Auto rotate robot. Positive integer is clockwise orientation.
-	 * 
-	 * @param amount: 100 is about 30 degrees
-	 */
-	private void rotate(int amount) {
-		tankDrive.autoMoveTo(amount, -amount);
-	}
-
 	
 	@Override
 	public void teleopInit() { tankDrive.resetEncoders(); }
