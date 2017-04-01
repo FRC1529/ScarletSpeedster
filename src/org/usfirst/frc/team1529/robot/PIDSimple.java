@@ -7,12 +7,13 @@ public class PIDSimple {
 	private Encoder encoder;
 	private int target;
 	private double current_error, prior_error, slope, sum_errors;
+	private boolean reset_status;
 	
-	public PIDSimple(double kp, double ki, double kd, int tol, Encoder enc) {
+	public PIDSimple(double kp, double ki, double kd, double tol, Encoder enc) {
 		kP = kp;
 		kI = ki;
 		kD = kd;
-		tolerance = (double) tol;
+		tolerance = tol;
 		encoder = enc;
 		reset();
 	}
@@ -22,10 +23,16 @@ public class PIDSimple {
 		prior_error = 0;
 		slope = 0;
 		sum_errors = 0;
+		reset_status = true;
 	}
 	
 	public void set_target(int targ) {
 		target = targ;
+		reset_status = false;
+	}
+	
+	public boolean isReset() {
+		return reset_status;
 	}
 	
 	public double getOutput() {
@@ -37,7 +44,7 @@ public class PIDSimple {
 		}
 	}
 	
-	private boolean isWithinTolerance() {
+	public boolean isWithinTolerance() {
 		return Math.abs(current_error) <= tolerance;
 	}
 	

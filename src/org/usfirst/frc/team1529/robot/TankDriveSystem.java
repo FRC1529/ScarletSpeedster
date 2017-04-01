@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1529.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.VictorSP;
+//import edu.wpi.first.wpilibj.VictorSP;
 
 public class TankDriveSystem {
 	/*
@@ -12,6 +12,12 @@ public class TankDriveSystem {
 	 * inputs: PWM ports for 3 victors per side
 	 */
 	DriveSystem leftDrive, rightDrive;
+	PIDSimple leftPID, rightPID;
+	private double kp = 0.5;
+	private double ki = 0.1;
+	private double kd = 0.0;
+	private double tolerance = 25.0;
+	private double robot_direction = -1.0;
 	
 	/* Pneumatic Shifter
 	 * 2 params: kForward port, kReverse port
@@ -51,7 +57,13 @@ public class TankDriveSystem {
 		
 		climbShifter = new DoubleSolenoid(climbSolenoid[0], climbSolenoid[1], climbSolenoid[2]);
 		climbShifter.set(TODRIVE);
+		createPID();
 //		resetTestingVariables();
+	}
+	
+	private void createPID() {
+		leftPID = new PIDSimple(kp, ki, kd, tolerance, leftDrive.encoder);
+		rightPID = new PIDSimple(kp, ki, kd, tolerance, rightDrive.encoder);
 	}
 	
 	/***************************
@@ -166,8 +178,34 @@ public class TankDriveSystem {
 	}
 	
 	public void autoMoveStraightTo(int encoder_counts) {
+		if(leftPID.isReset() && rightPID.isReset()) {
+			leftPID.set_target(encoder_counts);
+			rightPID.set_target(encoder_counts);
+		}
 		Logger.title("Auto move straight to.");
-		
+		double pid_speed = (leftPID.getOutput() + rightPID.getOutput()) / 2.0;
+		if(leftPID.isWithinTolerance() || rightPID.isWithinTolerance()) {
+			Logger.log("Move straight successful");
+			robot.auto_step++;
+			resetPIDs();
+			setDriveSpeed(0.0);
+		} else {
+			setDriveSpeed(robot_direction * pid_speed);
+		}
+	}
+	
+	private void setDriveSpeed(double speed) {
+		setDriveSpeed(speed, speed);
+	}
+	
+	private void setDriveSpeed(double leftSpeed, double rightSpeed) {
+		leftDrive.setSpeed(leftSpeed);
+		rightDrive.setSpeed(rightSpeed);
+	}
+	
+	private void resetPIDs() {
+		leftPID.reset();
+		rightPID.reset();
 	}
 	
 	public void autoMoveTo(int encoder_counts) {
@@ -196,31 +234,31 @@ public class TankDriveSystem {
 		}
 	}
 	
-	private void encoderSetDrive(DriveSystem drive, int target, String driveName) {
-		double direction = -1.0;
-		double speed = direction * 0.3;
-		
-		if(drive.encoder.get() < target - ENCODER_BAND) {
-			// do nothing
-		} else if (drive.encoder.get() > target + ENCODER_BAND) {
-			speed = -speed;
-		} else {
-			speed = 0.0;
-		}
-		
-//		String msg = String.format("Encoder value: %d; target: %d; Encoder Band: %d; Speed: %d", drive.encoder.get(), target, ENCODER_BAND, speed);
-		Logger.log(String.format("-----------------%s------------", driveName));
-		String enc = String.format("Encoder Value: %d", drive.encoder.get());
-		String tar = String.format("Target: %d", target);
-		String band = String.format("Encoder Band: %d", ENCODER_BAND);
-		String spd = String.format("Speed: %f", speed);
-		Logger.log(enc);
-		Logger.log(tar);
-		Logger.log(band);
-		Logger.log(spd);
-		
-		drive.setSpeed(speed);
-	}
+//	private void encoderSetDrive(DriveSystem drive, int target, String driveName) {
+//		double direction = -1.0;
+//		double speed = direction * 0.3;
+//		
+//		if(drive.encoder.get() < target - ENCODER_BAND) {
+//			// do nothing
+//		} else if (drive.encoder.get() > target + ENCODER_BAND) {
+//			speed = -speed;
+//		} else {
+//			speed = 0.0;
+//		}
+//		
+////		String msg = String.format("Encoder value: %d; target: %d; Encoder Band: %d; Speed: %d", drive.encoder.get(), target, ENCODER_BAND, speed);
+//		Logger.log(String.format("-----------------%s------------", driveName));
+//		String enc = String.format("Encoder Value: %d", drive.encoder.get());
+//		String tar = String.format("Target: %d", target);
+//		String band = String.format("Encoder Band: %d", ENCODER_BAND);
+//		String spd = String.format("Speed: %f", speed);
+//		Logger.log(enc);
+//		Logger.log(tar);
+//		Logger.log(band);
+//		Logger.log(spd);
+//		
+//		drive.setSpeed(speed);
+//	}
 	
 	private void logAutoStatus(String name, DriveSystem drive, int target, int error, double speed) {
 		Logger.log(String.format("-----------------%s------------", name));
@@ -278,13 +316,13 @@ public class TankDriveSystem {
 		drive.setSpeed(speed);
 	}
 	
-	private double speedSetting(double maxSpeed, int maxError, int error, double power) {
-		double val = (double) maxError;
-		String msg = String.format("Max speed: %f\nMax Error: %d\nError: %d\nTo the power of: %f", maxSpeed, maxError, error, power);
-		Logger.log(msg);
-		double speedToSet = maxSpeed / (Math.pow(val, power)) * ((double) error);
-		return speedToSet;
-	}
+//	private double speedSetting(double maxSpeed, int maxError, int error, double power) {
+//		double val = (double) maxError;
+//		String msg = String.format("Max speed: %f\nMax Error: %d\nError: %d\nTo the power of: %f", maxSpeed, maxError, error, power);
+//		Logger.log(msg);
+//		double speedToSet = maxSpeed / (Math.pow(val, power)) * ((double) error);
+//		return speedToSet;
+//	}
 	
 	private double speedSettingAlternate(double maxSpeed, int maxError, int error, double minSpeed, int tolerance) {
 		double t = (double) tolerance;
