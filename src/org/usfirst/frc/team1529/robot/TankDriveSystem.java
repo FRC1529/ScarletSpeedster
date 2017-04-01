@@ -65,45 +65,8 @@ public class TankDriveSystem {
 		setSpeed(station);
 		checkShifters(station);
 		printEncoders();
-//		testDriveSystems(station);
 	}
 	
-//	private void testDriveSystems(EnhancedDriverStation station) {
-//		if(station.isRunTest()) {
-//			if(!isTesting) {
-//				isTesting = true;
-//			}
-//			runDriveSystemTest(station);
-//		} else if(isTesting) {
-//			resetTestingVariables();
-//		}
-//	}
-	
-//	private void resetTestingVariables() {
-//		testStep = 0;
-//		isTesting = false;
-//		testTime = 0;
-//	}
-	
-//	private void runDriveSystemTest(EnhancedDriverStation station) {
-//		Logger.log("Running Drive Test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//		switch(testStep) {
-//		case 0: testStep++; break;
-//		case 1: testMotor(leftDrive.victor1); break;
-//		}
-//	}
-	
-//	private void testMotor(VictorSP motor) {
-//		if(testTime == 0) {
-//			motor.setSpeed(1.0);
-//		} else if(testTime >= TEST_LENGTH) {
-//			motor.setSpeed(0.0);
-//			testStep++;
-//			return;
-//		}
-//		
-//		testTime++;
-//	}
 	
 	private void setSpeed(EnhancedDriverStation station) {
 		leftDrive.setSpeed(station.leftStickValue());
@@ -202,8 +165,13 @@ public class TankDriveSystem {
 		rightDrive.encoder.reset();
 	}
 	
+	public void autoMoveStraightTo(int encoder_counts) {
+		Logger.title("Auto move straight to.");
+		
+	}
+	
 	public void autoMoveTo(int encoder_counts) {
-//		autoMoveTo(encoder_counts, encoder_counts);
+		autoMoveTo(encoder_counts, encoder_counts);
 		
 		// New code
 		Logger.log("THIS IS NEW");
@@ -211,7 +179,7 @@ public class TankDriveSystem {
 		Logger.log(msg);
 		printEncoders();
 		
-		int avgEncoder = (leftDrive.encoder.get() + rightDrive.encoder.get()) / 2;
+//		int avgEncoder = (leftDrive.encoder.get() + rightDrive.encoder.get()) / 2;
 		
 	}
 	
@@ -227,24 +195,6 @@ public class TankDriveSystem {
 			resetEncoders();
 		}
 	}
-	
-	/**
-	 * Untested code.
-	 * @param drive
-	 * @param target
-	 */
-//	private double pSpeedSet(DriveSystem drive, int target) {
-//		double kP = 0.15;
-//		int max_encoder_distance = 50;
-//		int encoder_distance = target - drive.encoder.get();
-//		if(encoder_distance > max_encoder_distance) {
-//			return 1.0;
-//		} else if(encoder_distance < -max_encoder_distance) {
-//			return -1.0;
-//		} else {
-//			return kP * (max_encoder_distance - encoder_distance) / max_encoder_distance;
-//		}
-//	}
 	
 	private void encoderSetDrive(DriveSystem drive, int target, String driveName) {
 		double direction = -1.0;
