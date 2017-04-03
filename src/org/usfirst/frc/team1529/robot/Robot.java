@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
 		gearArm 	= new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		
 		setupAutoChooser();
-		setupHDCamera(96, 54, 60);
+//		setupHDCamera(96, 54, 60);
 	}
 	
 	private void setupChoosers() {
@@ -108,6 +108,7 @@ public class Robot extends IterativeRobot {
 	private void setupAutoChooser() {
 		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Clear Baseline", "baseline");
+		autoChooser.addObject("Center of Airship", "center");
 		autoChooser.addObject("Left of Airship", "left");
 		autoChooser.addObject("Right of Airship", "right");
 		autoChooser.addObject("Dummy Straight", "dummy");
@@ -149,20 +150,21 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		gearArm.flapOff();
-		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
-		Logger.log(msg);
+//		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
+//		Logger.log(msg);
 		
 		runChoice();
 	}
 	
 	private void runChoice() {
-		String msg = String.format("AutoChoice: %s", auto_choice);
-		Logger.log(msg);
+//		String msg = String.format("AutoChoice: %s", auto_choice);
+//		Logger.log(msg);
 		switch(auto_choice) {
 		case "baseline": clearBaseline(); break;
 		case "left": autoLeftPeg(); break;
 		case "right": autoRightPeg(); break;
 		case "dummy": autoDummy(); break;
+		case "center": autoCenter(); break;
 		}
 	}
 	
@@ -174,6 +176,23 @@ public class Robot extends IterativeRobot {
 		switch(auto_step) {
 		case 1: goToBaseline(); break;
 		}
+	}
+	
+	private void autoCenter() {
+		switch(auto_step) {
+		case 1: tankDrive.autoMoveStraightTo(760);
+		case 2: autoOpenFlap();
+		case 3: autoLowerFlap();
+		}
+	}
+	
+	private void autoOpenFlap() {
+		auto_step++;
+	}
+	
+	private void autoLowerFlap() {
+		
+		auto_step++;
 	}
 	
 	private void autoDummy(){
@@ -242,6 +261,8 @@ public class Robot extends IterativeRobot {
 			teleopClimb();
 			shiftToDrive();
 		}
+		
+		Logger.log(tankDrive.encoderToStr());
 	}
 	
 	
@@ -269,13 +290,13 @@ public class Robot extends IterativeRobot {
 	 * Do the things that should be done when in Teleop and in drive mode.
 	 */
 	private void teleopDrive() {
-		Logger.log("Teleop Drive");
+//		Logger.log("Teleop Drive");
 		tankDrive.drive(station); // push implementation to tankDrive System
 		teleopGearArm();
 	}
 	
 	private void teleopGearArm() {
-		Logger.log("Teleop gear arm control");
+//		Logger.log("Teleop gear arm control");
 		gearArm.control(station);
 	}
 	
@@ -283,7 +304,7 @@ public class Robot extends IterativeRobot {
 	 * Do the things that should be done when in Teleop and not in drive mode (aka climbing mode).
 	 */
 	private void teleopClimb() {
-		Logger.log("Teleop Climb");
+//		Logger.log("Teleop Climb");
 		tankDrive.climb(station); // push implementation to tankDrive System
 	}
 }

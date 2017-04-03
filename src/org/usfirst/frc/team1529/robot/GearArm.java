@@ -64,7 +64,7 @@ public class GearArm {
 		double direction 	= 1.0;
 		double upSpeed 		= direction * 0.35;
 		double downSpeed 	= -direction * 0.2;
-		Logger.log("TRYING TO SET ARM");
+//		Logger.log("TRYING TO SET ARM");
 		if(station.armUp()) {
 			pivot.set(upSpeed);
 		} else if(station.armDown()) {

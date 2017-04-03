@@ -13,10 +13,11 @@ public class TankDriveSystem {
 	 */
 	DriveSystem leftDrive, rightDrive;
 	PIDSimple leftPID, rightPID;
-	private double kp = 0.5;
-	private double ki = 0.1;
+	private double kp = 1.0;
+	private double ki = 0.0;
 	private double kd = 0.0;
-	private double tolerance = 25.0;
+	private double tolerance = 2.0;
+	private double outputAdjust = 2000.0;
 	private double robot_direction = -1.0;
 	
 	/* Pneumatic Shifter
@@ -62,8 +63,8 @@ public class TankDriveSystem {
 	}
 	
 	private void createPID() {
-		leftPID = new PIDSimple(kp, ki, kd, tolerance, leftDrive.encoder);
-		rightPID = new PIDSimple(kp, ki, kd, tolerance, rightDrive.encoder);
+		leftPID = new PIDSimple(kp, ki, kd, tolerance, outputAdjust, leftDrive.encoder);
+		rightPID = new PIDSimple(kp, ki, kd, tolerance, outputAdjust, rightDrive.encoder);
 	}
 	
 	/***************************
@@ -178,13 +179,18 @@ public class TankDriveSystem {
 	}
 	
 	public void autoMoveStraightTo(int encoder_counts) {
-		if(leftPID.isReset() && rightPID.isReset()) {
+		logAutoStatus("Auto Straight left", leftDrive, encoder_counts, leftPID.getErrorInt(), leftDrive.victor1.getSpeed());
+		Logger.log(leftPID.toStr());
+		
+		logAutoStatus("Auto Straight right", rightDrive, encoder_counts, rightPID.getErrorInt(), rightDrive.victor1.getSpeed());
+		Logger.log(rightPID.toStr());
+		if(leftPID.isReset()) {
 			leftPID.set_target(encoder_counts);
-			rightPID.set_target(encoder_counts);
+//			rightPID.set_target(encoder_counts);
 		}
 		Logger.title("Auto move straight to.");
-		double pid_speed = (leftPID.getOutput() + rightPID.getOutput()) / 2.0;
-		if(leftPID.isWithinTolerance() || rightPID.isWithinTolerance()) {
+		double pid_speed = leftPID.getOutput();
+		if(leftPID.isWithinTolerance()) {
 			Logger.log("Move straight successful");
 			robot.auto_step++;
 			resetPIDs();
@@ -350,5 +356,9 @@ public class TankDriveSystem {
 	
 	private boolean isReached(DriveSystem drive, int target) {
 		return drive.encoder.get() >= (target - ENCODER_BAND) && drive.encoder.get() <= (target + ENCODER_BAND);
+	}
+	
+	public String encoderToStr() {
+		return String.format("Left Encoder: %s; Right Encoder: %s", leftDrive.encoder.get(), rightDrive.encoder.get());
 	}
 }

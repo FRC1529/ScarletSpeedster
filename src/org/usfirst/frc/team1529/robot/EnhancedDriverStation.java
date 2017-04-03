@@ -146,13 +146,13 @@ public class EnhancedDriverStation {
 	}
 	
 	public boolean armDown() {
-		if(operator.getRawButton(GEAR_ARM_DOWN));
+		if(operator.getRawButton(GEAR_ARM_DOWN))
 			Logger.log("ARM DOWN************#^*@&^*(#^(*@#*^&#(*&^@#*(&^(*#&^(*@#^(*@#^");
 		return operator.getRawButton(GEAR_ARM_DOWN);
 	}
 	
 	public boolean isIntake() {
-		Logger.log(String.format("Button value: %s: ", operator.getRawButton(INTAKE)));
+//		Logger.log(String.format("Button value: %s: ", operator.getRawButton(INTAKE)));
 		return operator.getRawButton(INTAKE);
 	}
 	
