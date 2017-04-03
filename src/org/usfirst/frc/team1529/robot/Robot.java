@@ -3,6 +3,7 @@ package org.usfirst.frc.team1529.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -165,6 +166,26 @@ public class Robot extends IterativeRobot {
 		case "right": autoRightPeg(); break;
 		case "dummy": autoDummy(); break;
 		case "center": autoCenter(); break;
+		case "streak_upfield": autoStreakUpfield(); break;
+		}
+	}
+	
+	private void autoStreakUpfield() {
+		switch(auto_step) {
+		case 1: goToBaseline(); break;
+		case 2: waitThenStreakUpfield(); break;
+		}
+	}
+	
+	private void waitThenStreakUpfield() {
+		if(Timer.getMatchTime() >= 13.9) {
+			tankDrive.setSpeed(0.35);
+		} else if(Timer.getMatchTime() >= 14.3) {
+			tankDrive.setSpeed(0.7);
+		} else if(Timer.getMatchTime() >= 14.5) {
+			tankDrive.setSpeed(1.0);
+		} else if(Timer.getMatchTime() > 15.0) {
+			tankDrive.setSpeed(0.0);
 		}
 	}
 	

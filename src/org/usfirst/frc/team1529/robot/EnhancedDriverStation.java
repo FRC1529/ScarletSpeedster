@@ -94,7 +94,7 @@ public class EnhancedDriverStation {
 	
 	private double stickValue(Joystick js) {
 		double value = js.getY();
-		Logger.log(String.format("Stick value: %f", value));
+//		Logger.log(String.format("Stick value: %f", value));
 	
 		if(value > DEADBAND || value < DEADBAND)
 			return value;

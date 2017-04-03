@@ -86,6 +86,13 @@ public class TankDriveSystem {
 		rightDrive.setSpeed(station.rightStickValue());
 	}
 	
+	public void setSpeed(double speed) { setSpeed(speed, speed); }
+	
+	private void setSpeed(double left, double right) {
+		leftDrive.setSpeed(left);
+		rightDrive.setSpeed(right);
+	}
+	
 	private void checkShifters(EnhancedDriverStation station) {
 		if(station.shiftUp()) upShift();
 		if(station.shiftDown()) downShift();
