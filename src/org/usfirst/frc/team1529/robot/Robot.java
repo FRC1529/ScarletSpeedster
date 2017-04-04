@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1529.robot;
 
+import java.util.Date;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -16,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Special, cool stuff: Pixycam to find gears & pegs, Visioncam for drivers to see, LED's, Encoders, & Pneumatics
  */
 public class Robot extends IterativeRobot {
-	private boolean isCompetition = true;
+	private boolean isCompetition = false;
 	
 	// USB Ports
 	private int leftStickPort 	= 0;
@@ -76,6 +78,7 @@ public class Robot extends IterativeRobot {
 	int auto_step;
 	int auto_dummy_counter;
 	String auto_choice;
+	long auto_counter;
 	
 	
 	// NOTE: Climber system is built into Tank Drive.
@@ -91,13 +94,19 @@ public class Robot extends IterativeRobot {
 			MOTOR_DIRECTION = PRACTICE_BOT_MOTOR_DIRECTION;
 		}
 		
+		drive_mode = true;
+		
 		Logger.log("Initializing the robot...");
 		station 	= new EnhancedDriverStation(leftStickPort, rightStickPort, OPERATOR_PORT);
 		tankDrive 	= new TankDriveSystem(this, MOTOR_DIRECTION, leftDrivePorts, rightDrivePorts, DRIVE_SOLENOID, CLIMB_SOLENOID);
 		gearArm 	= new GearArm(gearArmTalonCANID, flap_out, flap_in,intakeMotor);
 		
 		setupAutoChooser();
+		initializeTimer();
 //		setupHDCamera(96, 54, 60);
+	}
+	private void initializeTimer() {
+		auto_counter = 0;
 	}
 	
 	private void setupChoosers() {
@@ -113,6 +122,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Left of Airship", "left");
 		autoChooser.addObject("Right of Airship", "right");
 		autoChooser.addObject("Dummy Straight", "dummy");
+		autoChooser.addObject("Streak Upfield", "streak_upfield");
 		SmartDashboard.putData("Autonomous:", autoChooser);
 	}
 	
@@ -151,6 +161,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		gearArm.flapOff();
+		auto_counter++;
 //		String msg = String.format("************* Auto Periodic: step # %d", auto_step);
 //		Logger.log(msg);
 		
@@ -172,20 +183,35 @@ public class Robot extends IterativeRobot {
 	
 	private void autoStreakUpfield() {
 		switch(auto_step) {
-		case 1: goToBaseline(); break;
-		case 2: waitThenStreakUpfield(); break;
+		case 1: waitThenStreakUpfield(); break;
 		}
 	}
 	
 	private void waitThenStreakUpfield() {
-		if(Timer.getMatchTime() >= 13.9) {
-			tankDrive.setSpeed(0.35);
-		} else if(Timer.getMatchTime() >= 14.3) {
-			tankDrive.setSpeed(0.7);
-		} else if(Timer.getMatchTime() >= 14.5) {
-			tankDrive.setSpeed(1.0);
-		} else if(Timer.getMatchTime() > 15.0) {
+		double direction = -1.0;
+//		double delta = Timer.getMatchTime();
+		double delta = auto_counter / 50.0;
+		String msg = String.format("Going Upfield: Match Time:: %f", delta);
+		Logger.log(msg);
+		double start = 11.5;
+		if(delta < 2.0) {
+			tankDrive.setSpeed(direction * 0.4);
+		} else if(delta < start) {
 			tankDrive.setSpeed(0.0);
+		}else if(delta < 12.25) {
+			tankDrive.setSpeed(direction * 0.35);
+		} else if(delta < 12.5) {
+			Logger.log("B");
+			tankDrive.setSpeed(direction * 0.7);
+		} else if(delta < 15.0) {
+			Logger.log("C");
+			tankDrive.setSpeed(direction * 1.0);
+		} else {
+			Logger.log("STOP");
+			tankDrive.setSpeed(0.0);
+			tankDrive.shiftToClimb();
+			drive_mode = false;
+			auto_step++;
 		}
 	}
 	
@@ -230,6 +256,7 @@ public class Robot extends IterativeRobot {
 		} else if(auto_dummy_counter > stopper) {
 			tankDrive.leftDrive.setSpeed(0.0);
 			tankDrive.rightDrive.setSpeed(0.0);
+			auto_step++;
 		}
 		
 		auto_dummy_counter++;
@@ -268,7 +295,9 @@ public class Robot extends IterativeRobot {
 	private void autoMoveTo(int leftSteps, int rightSteps) { tankDrive.autoMoveTo(leftSteps, rightSteps); }
 	
 	@Override
-	public void teleopInit() { tankDrive.resetEncoders(); }
+	public void teleopInit() { 
+		tankDrive.resetEncoders();
+	}
 
 	/**
 	 * This function is called periodically during operator control

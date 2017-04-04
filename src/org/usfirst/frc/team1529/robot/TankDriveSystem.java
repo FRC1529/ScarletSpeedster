@@ -368,4 +368,8 @@ public class TankDriveSystem {
 	public String encoderToStr() {
 		return String.format("Left Encoder: %s; Right Encoder: %s", leftDrive.encoder.get(), rightDrive.encoder.get());
 	}
+	
+	public String status() {
+		return String.format("Tank Drive Status: left drive - %f || right drive - %f", leftDrive.victor1.getSpeed(), rightDrive.victor1.getSpeed());
+	}
 }
