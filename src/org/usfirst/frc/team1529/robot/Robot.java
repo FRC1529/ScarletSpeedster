@@ -150,6 +150,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void initializeAutoVariables() {
+		Logger.log("Initializing Auto Variables");
 		auto_choice = autoChooser.getSelected().toString();
 		auto_step = 1;
 		auto_dummy_counter = 0;
@@ -193,14 +194,14 @@ public class Robot extends IterativeRobot {
 		double delta = auto_counter / 50.0;
 		String msg = String.format("Going Upfield: Match Time:: %f", delta);
 		Logger.log(msg);
-		double start = 11.5;
+		double start = 12.5;
 		if(delta < 2.0) {
 			tankDrive.setSpeed(direction * 0.4);
 		} else if(delta < start) {
 			tankDrive.setSpeed(0.0);
-		}else if(delta < 12.25) {
+		}else if(delta < 13) {
 			tankDrive.setSpeed(direction * 0.35);
-		} else if(delta < 12.5) {
+		} else if(delta < 13.5) {
 			Logger.log("B");
 			tankDrive.setSpeed(direction * 0.7);
 		} else if(delta < 15.0) {
