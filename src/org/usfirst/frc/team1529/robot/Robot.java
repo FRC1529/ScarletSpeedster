@@ -5,6 +5,7 @@ import java.util.Date;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -71,6 +72,7 @@ public class Robot extends IterativeRobot {
 	GearArm gearArm; 	// Gear Arm
 	UsbCamera camera; 	// Vision Camera setup
 	SendableChooser<String> autoChooser;
+	Sendable timeWarning;
 
 	boolean drive_mode     = true; 	// If false, in climb mode
 	int auto_mode_position = 0; 	// details in autoInit()
@@ -104,23 +106,29 @@ public class Robot extends IterativeRobot {
 		setupAutoChooser();
 		initializeTimer();
 //		setupHDCamera(96, 54, 60);
+//		sendWarning();
 	}
+	
+	private String getMatchTime() {
+		return String.format("Match time: %f", Timer.getMatchTime());
+	}
+	
 	private void initializeTimer() {
 		auto_counter = 0;
 	}
 	
-	private void setupChoosers() {
-		setupAutoChooser();
-//		setupDriverChooser(); // TODO: select driver
-//		setupRobotChooser();  // Competition or practice bot.
-	}
+//	private void setupChoosers() {
+//		setupAutoChooser();
+////		setupDriverChooser(); // TODO: select driver
+////		setupRobotChooser();  // Competition or practice bot.
+//	}
 	
 	private void setupAutoChooser() {
 		autoChooser = new SendableChooser<String>();
-		autoChooser.addDefault("Clear Baseline", "baseline");
-		autoChooser.addObject("Center of Airship", "center");
-		autoChooser.addObject("Left of Airship", "left");
-		autoChooser.addObject("Right of Airship", "right");
+//		autoChooser.addDefault("Clear Baseline", "baseline");
+//		autoChooser.addObject("Center of Airship", "center");
+//		autoChooser.addObject("Left of Airship", "left");
+//		autoChooser.addObject("Right of Airship", "right");
 		autoChooser.addObject("Dummy Straight", "dummy");
 		autoChooser.addObject("Streak Upfield", "streak_upfield");
 		SmartDashboard.putData("Autonomous:", autoChooser);
@@ -194,14 +202,14 @@ public class Robot extends IterativeRobot {
 		double delta = auto_counter / 50.0;
 		String msg = String.format("Going Upfield: Match Time:: %f", delta);
 		Logger.log(msg);
-		double start = 12.5;
+		double start = 13.0;
 		if(delta < 2.0) {
 			tankDrive.setSpeed(direction * 0.4);
 		} else if(delta < start) {
 			tankDrive.setSpeed(0.0);
-		}else if(delta < 13) {
+		}else if(delta < 14.0) {
 			tankDrive.setSpeed(direction * 0.35);
-		} else if(delta < 13.5) {
+		} else if(delta < 14.5) {
 			Logger.log("B");
 			tankDrive.setSpeed(direction * 0.7);
 		} else if(delta < 15.0) {
@@ -229,8 +237,8 @@ public class Robot extends IterativeRobot {
 	private void autoCenter() {
 		switch(auto_step) {
 		case 1: tankDrive.autoMoveStraightTo(760);
-		case 2: autoOpenFlap();
-		case 3: autoLowerFlap();
+//		case 2: autoOpenFlap();
+//		case 3: autoLowerFlap();
 		}
 	}
 	
@@ -313,7 +321,21 @@ public class Robot extends IterativeRobot {
 			shiftToDrive();
 		}
 		
+//		timeWarning();
+//		sendWarning();
+		
 		Logger.log(tankDrive.encoderToStr());
+	}
+	
+	private void timeWarning() {
+		double warning = 60.0 * 3.0 - 20.0;
+		if(Timer.getMatchTime() > warning){
+			sendWarning();
+		}
+	}
+	
+	private void sendWarning() {
+		SmartDashboard.putString("matchTime", getMatchTime());
 	}
 	
 	

@@ -13,9 +13,9 @@ public class TankDriveSystem {
 	 */
 	DriveSystem leftDrive, rightDrive;
 	PIDSimple leftPID, rightPID;
-	private double kp = 1.0;
-	private double ki = 0.0;
-	private double kd = 0.0;
+	private double kp = 0.5;
+	private double ki = 0.25;
+	private double kd = 0.1;
 	private double tolerance = 2.0;
 	private double outputAdjust = 2000.0;
 	private double robot_direction = -1.0;
