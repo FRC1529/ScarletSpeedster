@@ -9,13 +9,18 @@ package org.usfirst.frc.team1529.robot;
  */
 public class Logger {
 	private static final String HEADER = "->";
+	private static final boolean ENABLED = false;
 	
 	public static void log(String msg) {
-//		System.out.println(HEADER + msg);
+		if(ENABLED) {
+			System.out.println(HEADER + msg);
+		}
 	}
 	
 	public static void title(String msg) {
-//		String title = String.format("============== %s =============\n", msg);
-//		System.out.print(title);
+		if(ENABLED) {
+			String title = String.format("============== %s =============\n", msg);
+			System.out.print(title);
+		}
 	}
 }

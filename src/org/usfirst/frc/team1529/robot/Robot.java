@@ -124,12 +124,13 @@ public class Robot extends IterativeRobot {
 //	}
 	
 	private void setupAutoChooser() {
+		System.out.println("Setting up chooser");
 		autoChooser = new SendableChooser<String>();
 //		autoChooser.addDefault("Clear Baseline", "baseline");
 //		autoChooser.addObject("Center of Airship", "center");
 //		autoChooser.addObject("Left of Airship", "left");
 //		autoChooser.addObject("Right of Airship", "right");
-		autoChooser.addObject("Dummy Straight", "dummy");
+		autoChooser.addDefault("Dummy Straight", "dummy");
 		autoChooser.addObject("Streak Upfield", "streak_upfield");
 		SmartDashboard.putData("Autonomous:", autoChooser);
 	}

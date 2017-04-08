@@ -38,10 +38,15 @@ public class PIDSimple {
 	
 	public double getOutput() {
 		setVars();
+		double output = (kP * current_error + kD * slope + kI * sum_errors) / output_adjustment;
 		if(isWithinTolerance()) {
 			return 0.0;
+		} else if(output > 1.0){
+			return 1.0;
+		} else if(output < -1.0) {
+			return -1.0;
 		} else {
-			return (kP * current_error + kD * slope + kI * sum_errors) / output_adjustment;
+			return output;
 		}
 	}
 	
