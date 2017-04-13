@@ -81,6 +81,7 @@ public class Robot extends IterativeRobot {
 	int auto_dummy_counter;
 	String auto_choice;
 	long auto_counter;
+	long delay_counter;
 	
 	
 	// NOTE: Climber system is built into Tank Drive.
@@ -132,6 +133,7 @@ public class Robot extends IterativeRobot {
 //		autoChooser.addObject("Right of Airship", "right");
 		autoChooser.addDefault("Dummy Straight", "dummy");
 		autoChooser.addObject("Streak Upfield", "streak_upfield");
+		autoChooser.addObject("Test Dummy Center Peg", "test_center");
 		SmartDashboard.putData("Autonomous:", autoChooser);
 	}
 	
@@ -163,6 +165,7 @@ public class Robot extends IterativeRobot {
 		auto_choice = autoChooser.getSelected().toString();
 		auto_step = 1;
 		auto_dummy_counter = 0;
+		delay_counter = 0;
 	}
 
 	/**
@@ -188,7 +191,28 @@ public class Robot extends IterativeRobot {
 		case "dummy": autoDummy(); break;
 		case "center": autoCenter(); break;
 		case "streak_upfield": autoStreakUpfield(); break;
+		case "test_center": autoTestCenter(); break;
 		}
+	}
+	
+	private void autoTestCenter() {
+		switch(auto_step) {
+		case 1: autoDummy(93); break;
+		case 2: delayRobot(10); break;
+		case 3: releaseFlap(); break;
+		}
+	}
+	
+	private void delayRobot(long time) {
+		if(delay_counter < time) {
+			delay_counter++;
+		} else {
+			auto_step++;
+		}
+	}
+	
+	private void releaseFlap() {
+		gearArm.openFlap();
 	}
 	
 	private void autoStreakUpfield() {
@@ -250,6 +274,25 @@ public class Robot extends IterativeRobot {
 	private void autoLowerFlap() {
 		
 		auto_step++;
+	}
+	
+	private void autoDummy(int stopper) {
+		Logger.log("Trying to Run Dummy");
+		String msg = String.format("Dummy Counter: %d", auto_dummy_counter);
+		Logger.log(msg);
+		if(auto_dummy_counter < stopper){
+			Logger.log("Dummy Auto Periodic");
+			
+			tankDrive.leftDrive.setSpeed(-0.3);
+			tankDrive.rightDrive.setSpeed(-0.27);
+			
+		} else if(auto_dummy_counter > stopper) {
+			tankDrive.leftDrive.setSpeed(0.0);
+			tankDrive.rightDrive.setSpeed(0.0);
+			auto_step++;
+		}
+		
+		auto_dummy_counter++;
 	}
 	
 	private void autoDummy(){

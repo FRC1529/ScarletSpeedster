@@ -118,7 +118,7 @@ public class GearArm {
 	/**
 	 * Open the flap.
 	 */
-	private void openFlap() { flap.set(OPEN); }
+	public void openFlap() { flap.set(OPEN); }
 	
 	/**
 	 * Close the flap.
